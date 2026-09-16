@@ -1,0 +1,956 @@
+/* ---------------------------------------------------------------------------
+   FU/TA documentation theme
+   ---------------------------------------------------------------------------
+   Material for MkDocs, dressed in the app's aesthetic: a dark terminal surface,
+   Fira Mono throughout, hard corners everywhere, and section headers set as
+   tracked uppercase operator labels.
+
+   The colour values are the published brand tokens (public/brand-kit/
+   futa_tokens.css); the light palette is the brand press sheet (ink on paper).
+   Only Material's own custom properties are reassigned — the layout and
+   components stay stock, so a Material upgrade cannot silently break this.
+   --------------------------------------------------------------------------- */
+
+/* --- Typeface -------------------------------------------------------------
+   Self-hosted Fira Mono, matching the app (index.html). `font: false` in
+   mkdocs.yml stops Material from loading a Google font, which leaves
+   --md-text-font / --md-code-font free for us to point at these faces. */
+
+@font-face {
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../assets/fonts/fira-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/fira-mono-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Fira Mono';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../assets/fonts/fira-mono-700.woff2') format('woff2');
+}
+
+/* --- Brand tokens ---------------------------------------------------------
+   Verbatim from the brand kit, plus the two derived values (a hairline rule and
+   a translucent panel fill) the docs need and the app keeps component-local. */
+
+:root {
+    --futa-bg1: hsl(220 19% 6%);
+    --futa-bg2: hsl(220 13% 9%);
+    --futa-bg3: hsl(214 11% 12%);
+    --futa-fg1: hsl(183 30% 74%);
+    --futa-fg2: hsl(183 10% 60%);
+    --futa-fg3: hsl(183 10% 32%);
+    --futa-accent1: hsl(183 30% 74%);
+    --futa-accent2: hsl(188 11% 40%);
+    --futa-green: hsl(153 84% 66%);
+    --futa-red: hsl(3 84% 66%);
+    --futa-orange: hsl(33 84% 66%);
+
+    /* Press-sheet (light) equivalents. */
+    --futa-ink: hsl(220 12% 9%);
+    --futa-ink-muted: hsl(187 8% 30%);
+    --futa-paper: hsl(0 0% 100%);
+    --futa-paper-2: hsl(200 10% 97%);
+
+    --md-text-font: 'Fira Mono';
+    --md-code-font: 'Fira Mono';
+
+    /* Hard corners, everywhere — the app resolves every radius token to 0. */
+    --md-shape-radius: 0;
+}
+
+/* Reserve the scrollbar gutter so pages that fit the viewport don't shift
+   horizontally relative to pages that scroll (noticeable with instant nav). */
+html {
+    scrollbar-gutter: stable;
+}
+
+/* --- Palette: dark (terminal) --------------------------------------------- */
+
+[data-md-color-scheme='slate'] {
+    --md-hue: 220;
+
+    --md-default-bg-color: var(--futa-bg1);
+    --md-default-bg-color--light: var(--futa-bg2);
+    --md-default-bg-color--lighter: var(--futa-bg3);
+    --md-default-bg-color--lightest: var(--futa-bg3);
+
+    --md-default-fg-color: hsl(183 12% 88%);
+    --md-default-fg-color--light: var(--futa-fg2);
+    --md-default-fg-color--lighter: var(--futa-fg3);
+    --md-default-fg-color--lightest: rgb(from var(--futa-fg3) r g b / 0.35);
+
+    --md-primary-fg-color: hsl(220 19% 4%);
+    --md-primary-bg-color: var(--futa-fg1);
+    --md-primary-bg-color--light: var(--futa-fg2);
+
+    --md-accent-fg-color: var(--futa-accent1);
+    --md-accent-fg-color--transparent: rgb(
+        from var(--futa-accent1) r g b / 0.1
+    );
+    --md-accent-bg-color: var(--futa-bg1);
+
+    --md-typeset-color: hsl(183 12% 86%);
+    /* A step brighter and more saturated than body text: the brand's own cyan
+       reads as prose at body weight, so links need the extra chroma to carry
+       on their own. */
+    --md-typeset-a-color: hsl(183 62% 70%);
+    --md-typeset-mark-color: rgb(from var(--futa-accent1) r g b / 0.25);
+    --md-typeset-kbd-color: var(--futa-bg3);
+    --md-typeset-kbd-accent-color: var(--futa-accent2);
+    --md-typeset-kbd-border-color: var(--futa-bg1);
+    --md-typeset-table-color: rgb(from var(--futa-accent2) r g b / 0.4);
+
+    --md-code-fg-color: hsl(183 14% 82%);
+    --md-code-bg-color: var(--futa-bg2);
+    --md-code-hl-color: rgb(from var(--futa-accent1) r g b / 0.2);
+    --md-code-hl-number-color: var(--futa-orange);
+    --md-code-hl-string-color: var(--futa-green);
+    --md-code-hl-keyword-color: var(--futa-accent1);
+    --md-code-hl-name-color: var(--md-code-fg-color);
+    --md-code-hl-function-color: var(--futa-fg1);
+    --md-code-hl-comment-color: var(--futa-fg3);
+    --md-code-hl-operator-color: var(--futa-fg2);
+    --md-code-hl-punctuation-color: var(--futa-fg2);
+
+    --md-footer-bg-color: hsl(220 19% 4%);
+    --md-footer-bg-color--dark: var(--futa-bg1);
+    --md-footer-fg-color: var(--futa-fg1);
+    --md-footer-fg-color--light: var(--futa-fg2);
+    --md-footer-fg-color--lighter: var(--futa-fg3);
+
+    --futa-rule: rgb(from var(--futa-accent2) r g b / 0.45);
+    --futa-panel: rgb(from var(--futa-bg3) r g b / 0.55);
+    --futa-label-fg: var(--futa-fg2);
+
+    color-scheme: dark;
+}
+
+/* --- Palette: light (press sheet) ----------------------------------------- */
+
+[data-md-color-scheme='default'] {
+    --md-default-bg-color: var(--futa-paper);
+    --md-default-bg-color--light: var(--futa-paper-2);
+    --md-default-fg-color: var(--futa-ink);
+    --md-default-fg-color--light: var(--futa-ink-muted);
+    --md-default-fg-color--lighter: hsl(187 8% 55%);
+
+    --md-primary-fg-color: hsl(220 12% 7%);
+    --md-primary-bg-color: hsl(183 22% 82%);
+
+    --md-accent-fg-color: hsl(188 34% 32%);
+    --md-accent-fg-color--transparent: hsl(188 34% 32% / 0.1);
+
+    --md-typeset-color: var(--futa-ink);
+    --md-typeset-a-color: hsl(188 62% 26%);
+    --md-typeset-table-color: hsl(187 8% 30% / 0.4);
+
+    --md-code-bg-color: var(--futa-paper-2);
+    --md-code-fg-color: hsl(220 12% 18%);
+
+    --md-footer-bg-color: hsl(220 12% 7%);
+    --md-footer-bg-color--dark: hsl(220 12% 5%);
+
+    --futa-rule: hsl(187 8% 30% / 0.4);
+    --futa-panel: var(--futa-paper-2);
+    --futa-label-fg: var(--futa-ink-muted);
+
+    color-scheme: light;
+}
+
+/* --- Hard corners ---------------------------------------------------------
+   Material rounds a dozen surfaces individually; the app rounds nothing. */
+
+.md-typeset pre > code,
+.md-typeset code,
+.md-typeset .highlight,
+.md-typeset .admonition,
+.md-typeset details,
+.md-typeset .tabbed-block,
+.md-typeset table:not([class]),
+.md-typeset .md-button,
+.md-search__form,
+.md-search__output,
+.md-search-result__article,
+.md-clipboard,
+.md-nav__link,
+.md-typeset kbd,
+.md-typeset .footnote,
+.md-top,
+.md-dialog {
+    border-radius: 0;
+}
+
+::selection {
+    background: rgb(0 255 255 / 0.6);
+    color: #000;
+}
+
+a:focus-visible,
+button:focus-visible,
+.md-nav__link:focus-visible,
+.md-search__input:focus-visible,
+.md-typeset .md-button:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--futa-accent1);
+    outline-offset: 2px;
+}
+
+/* --- Header ---------------------------------------------------------------
+   Black bar, a hairline accent rule under it (the app's route frame reads the
+   same way), and an operator-label site title. */
+
+.md-header {
+    border-bottom: 1px solid var(--futa-rule);
+    box-shadow: none;
+}
+
+.md-header--shadow {
+    box-shadow: 0 0 0.4rem rgb(0 0 0 / 0.4);
+}
+
+.md-header__title {
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+}
+
+.md-header__topic:first-child .md-ellipsis {
+    font-weight: 500;
+}
+
+.md-logo img {
+    /* The mark ships with its own dark plate; keep it crisp against the bar. */
+    height: 1.4rem;
+    width: 1.4rem;
+}
+
+.md-search__form {
+    border: 1px solid rgb(from var(--futa-accent2) r g b / 0.5);
+    background-color: var(--futa-bg3);
+}
+
+.md-search__form:hover,
+[data-md-toggle='search']:checked ~ .md-header .md-search__form {
+    border-color: var(--futa-accent1);
+    background-color: var(--futa-bg2);
+}
+
+.md-search__input::placeholder {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+}
+
+/* --- Navigation -----------------------------------------------------------
+   Sidebar section titles become tracked operator labels; the active page gets
+   the app's `>` row marker instead of a colour change alone. */
+
+.md-nav {
+    font-size: 0.68rem;
+}
+
+.md-nav__title {
+    color: var(--futa-label-fg);
+    font-weight: 500;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.md-nav--secondary .md-nav__title {
+    box-shadow: none;
+    border-bottom: 1px dashed var(--futa-rule);
+    background: transparent;
+}
+
+.md-nav__item--section > .md-nav__link {
+    color: var(--futa-label-fg);
+    font-weight: 500;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+.md-nav__link {
+    transition: color 120ms linear;
+}
+
+.md-nav__link--active,
+.md-nav__link--active code {
+    color: var(--md-typeset-a-color);
+}
+
+/* Anchors only: with `navigation.indexes`, a section's expand toggle is a
+   <label> that carries the same active class, and it would take a second
+   marker — floated to the right, where the label sits. */
+.md-nav__item a.md-nav__link--active {
+    position: relative;
+}
+
+.md-nav__item a.md-nav__link--active::before {
+    content: '>';
+    position: absolute;
+    left: -0.72rem;
+    color: var(--md-typeset-a-color);
+}
+
+/* The table of contents reads as a terminal listing rather than a paragraph. */
+.md-nav--secondary .md-nav__link {
+    letter-spacing: 0.02em;
+}
+
+/* --- Typography -----------------------------------------------------------
+   Fira Mono runs wider than a proportional face, so the base size comes down a
+   notch and the leading opens up to keep long prose comfortable. */
+
+.md-typeset {
+    font-size: 0.74rem;
+    line-height: 1.75;
+}
+
+.md-typeset h1 {
+    color: var(--md-default-fg-color);
+    font-weight: 500;
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+}
+
+/* The app's terminal cursor, parked after the page title. It does not blink:
+   a page title is read once, and a caret pulsing through the whole visit is
+   motion the reader cannot dismiss. Scoped to the page body because search
+   results reuse `h1` for their titles. */
+.md-content .md-typeset h1::after {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    margin-left: 0.18em;
+    border-bottom: 0.12em solid var(--md-typeset-a-color);
+}
+
+/* Section headers as press-sheet labels: small, tracked, uppercase, ruled. */
+.md-typeset h2 {
+    color: var(--futa-label-fg);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-bottom: 1px dashed var(--futa-rule);
+    padding-bottom: 0.35rem;
+    margin: 2.4rem 0 1rem;
+    line-height: 1.5;
+}
+
+.md-typeset h3 {
+    color: var(--md-default-fg-color);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin-top: 1.8rem;
+}
+
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+    color: var(--md-default-fg-color);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: none;
+}
+
+.md-typeset a {
+    /* Body links are underlined outright. In a single-typeface, single-hue
+       palette, colour alone is a weak signal — and it is no signal at all for
+       a reader who cannot separate the two hues. */
+    text-decoration: underline;
+    text-decoration-color: rgb(from var(--md-typeset-a-color) r g b / 0.45);
+    text-underline-offset: 0.2em;
+}
+
+.md-typeset a:hover {
+    text-decoration-color: currentcolor;
+}
+
+/* Structural links — heading anchors, the edit-this-page action, footer
+   navigation — are not prose, so they keep the plain treatment. */
+.md-typeset a.headerlink,
+.md-typeset a.md-content__button,
+.md-typeset .md-button {
+    text-decoration: none;
+}
+
+/* --- Ask AI ---------------------------------------------------------------
+   A static-site counterpart to the contextual menus on hosted documentation
+   platforms. The links hand an agent the current Markdown page and llms.txt;
+   no conversation data passes through FUTA infrastructure. */
+
+.md-typeset .futa-ai-menu {
+    --futa-ai-radius: 0;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    float: right;
+    width: max-content;
+    margin: 0 0 0.8rem 1rem;
+    font-size: 0.66rem;
+}
+
+.md-typeset .futa-ai-menu__dropdown {
+    position: static;
+    flex: 0 0 2.15rem;
+    width: 2.15rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.md-typeset .futa-ai-menu__dropdown:focus-within {
+    box-shadow: none;
+}
+
+.md-typeset .futa-ai-menu__primary,
+.md-typeset .futa-ai-menu__dropdown > summary {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    height: 2.15rem;
+    margin: 0;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--futa-rule);
+    background: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+    cursor: pointer;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+    list-style: none;
+    text-transform: none;
+}
+
+.md-typeset .futa-ai-menu__primary {
+    border-right: 0;
+    border-radius: var(--futa-ai-radius) 0 0 var(--futa-ai-radius);
+    text-decoration: none;
+}
+
+.md-typeset .futa-ai-menu__dropdown > summary {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border-left: 1px solid var(--futa-rule);
+    border-radius: 0 var(--futa-ai-radius) var(--futa-ai-radius) 0;
+}
+
+.md-typeset .futa-ai-menu__dropdown > summary::-webkit-details-marker {
+    display: none;
+}
+
+.md-typeset .futa-ai-menu__dropdown > summary::before {
+    display: none;
+}
+
+/* Material adds its own expand icon to every details summary. This menu has a
+   dedicated chevron below, so retaining the theme marker produces two arrows. */
+.md-typeset .futa-ai-menu__dropdown > summary::after {
+    display: none;
+}
+
+.md-typeset .futa-ai-menu__primary:hover,
+.md-typeset .futa-ai-menu__primary:focus-visible,
+.md-typeset .futa-ai-menu__dropdown > summary:hover,
+.md-typeset .futa-ai-menu__dropdown[open] > summary {
+    border-color: var(--md-typeset-a-color);
+    color: var(--md-typeset-a-color);
+}
+
+/* The divider is the disclosure segment's left border. Light it with the
+   primary action so the Claude hover outline closes on all four sides. */
+.md-typeset
+    .futa-ai-menu__primary:is(:hover, :focus-visible)
+    + .futa-ai-menu__dropdown
+    > summary {
+    border-left-color: var(--md-typeset-a-color);
+}
+
+.futa-ai-menu svg {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+}
+
+.futa-ai-menu__chevron {
+    display: grid;
+    flex: 0 0 0.8rem;
+    place-items: center;
+    width: 0.8rem;
+    height: 0.8rem;
+    transition: transform 120ms linear;
+}
+
+.md-typeset .futa-ai-menu__chevron svg {
+    width: 0.8rem;
+    height: 0.8rem;
+}
+
+.futa-ai-menu__dropdown[open] .futa-ai-menu__chevron {
+    transform: rotate(180deg);
+}
+
+.futa-ai-menu__panel {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    right: 0;
+    width: 18rem;
+    border: 1px solid var(--futa-rule);
+    border-radius: var(--futa-ai-radius);
+    background: var(--md-default-bg-color);
+    box-shadow: 0 0.4rem 1rem rgb(0 0 0 / 0.25);
+    overflow: hidden;
+}
+
+.md-typeset .futa-ai-menu__item {
+    display: grid;
+    grid-template-columns: 1.8rem 1fr 0.8rem;
+    gap: 0.65rem;
+    align-items: center;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.55rem 0.7rem;
+    border: 0;
+    border-bottom: 1px solid rgb(from var(--futa-accent2) r g b / 0.22);
+    background: transparent;
+    color: var(--md-default-fg-color);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+}
+
+.futa-ai-menu__icon {
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid var(--futa-rule);
+    border-radius: 0;
+}
+
+.md-typeset .futa-ai-menu__item:last-child {
+    border-bottom: 0;
+}
+
+.md-typeset .futa-ai-menu__item:hover,
+.md-typeset .futa-ai-menu__item:focus-visible {
+    background: var(--futa-panel);
+    color: var(--md-typeset-a-color);
+}
+
+.futa-ai-menu__item strong,
+.futa-ai-menu__item small {
+    display: block;
+}
+
+.futa-ai-menu__item strong {
+    font-size: 0.68rem;
+    font-weight: 500;
+}
+
+.futa-ai-menu__item small {
+    margin-top: 0.12rem;
+    color: var(--md-default-fg-color--light);
+    font-size: 0.57rem;
+    line-height: 1.4;
+}
+
+.futa-ai-menu__external {
+    color: var(--md-default-fg-color--lighter);
+}
+
+@media screen and (max-width: 44.984375em) {
+    .md-typeset .futa-ai-menu {
+        display: inline-flex;
+        float: none;
+        margin: 0 0 1rem;
+    }
+
+    .futa-ai-menu__panel {
+        right: auto;
+        left: 0;
+        max-width: calc(100vw - 2.4rem);
+    }
+}
+
+/* Bulleted lists take the app's `>` row marker. */
+.md-typeset ul li::marker {
+    color: var(--futa-accent2);
+}
+
+.md-typeset ol li::marker {
+    color: var(--futa-fg3);
+}
+
+.md-typeset hr {
+    border-bottom: 1px dashed var(--futa-rule);
+}
+
+.md-typeset blockquote {
+    border-left: 2px solid var(--futa-accent2);
+    color: var(--md-default-fg-color--light);
+}
+
+/* --- Code ----------------------------------------------------------------- */
+
+.md-typeset code {
+    border: 1px solid rgb(from var(--futa-accent2) r g b / 0.35);
+    padding: 0 0.25em;
+}
+
+.md-typeset pre > code {
+    border: 1px solid var(--futa-rule);
+}
+
+.md-typeset a > code {
+    color: inherit;
+}
+
+/* --- Tables ---------------------------------------------------------------
+   Modelled on the in-app data grid: uppercase header row, hairline separators,
+   a lit hover state, no fill and no rounding. */
+
+.md-typeset table:not([class]) {
+    border: 1px solid var(--futa-rule);
+    font-size: 0.68rem;
+}
+
+.md-typeset h2.futa-path-page + div table {
+    display: table;
+    width: 100%;
+}
+
+.md-typeset table:not([class]) th {
+    background-color: var(--futa-panel);
+    color: var(--md-default-fg-color--light);
+    font-weight: 500;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.md-typeset table:not([class]) td {
+    border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.22);
+    vertical-align: top;
+}
+
+.md-typeset table:not([class]) tbody tr {
+    transition: background-color 100ms linear;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+    background-color: var(--futa-panel);
+    box-shadow: none;
+}
+
+/* --- Admonitions ----------------------------------------------------------
+   A flat panel with a single accent edge and a tracked label, in place of
+   Material's tinted card. Material colours each type with `.md-typeset
+   .admonition.note`-style selectors, so the per-type rules below have to match
+   that specificity (and come later) to take effect; they set one custom
+   property, which the shared rules then read. */
+
+.md-typeset .admonition,
+.md-typeset details {
+    --futa-admonition: var(--futa-accent1);
+    border: 1px solid var(--futa-rule);
+    border-left-width: 2px;
+    background-color: var(--futa-panel);
+    box-shadow: none;
+    font-size: 0.72rem;
+}
+
+.md-typeset .admonition:focus-within,
+.md-typeset details:focus-within {
+    box-shadow: 0 0 0 2px rgb(from var(--futa-admonition) r g b / 0.25);
+}
+
+.md-typeset .admonition > .admonition-title,
+.md-typeset details > summary {
+    background-color: transparent;
+    border-bottom: 1px dashed var(--futa-rule);
+    color: var(--futa-admonition);
+    font-weight: 500;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.md-typeset .admonition > .admonition-title::before,
+.md-typeset details > summary::before {
+    background-color: var(--futa-admonition);
+}
+
+/* The colour families: cyan for neutral, green for affirmative, orange for
+   caution, red for failure — the app's status palette. */
+
+.md-typeset .admonition.note,
+.md-typeset details.note,
+.md-typeset .admonition.abstract,
+.md-typeset details.abstract,
+.md-typeset .admonition.summary,
+.md-typeset details.summary,
+.md-typeset .admonition.tldr,
+.md-typeset details.tldr,
+.md-typeset .admonition.info,
+.md-typeset details.info,
+.md-typeset .admonition.todo,
+.md-typeset details.todo,
+.md-typeset .admonition.question,
+.md-typeset details.question,
+.md-typeset .admonition.help,
+.md-typeset details.help,
+.md-typeset .admonition.faq,
+.md-typeset details.faq,
+.md-typeset .admonition.example,
+.md-typeset details.example,
+.md-typeset .admonition.quote,
+.md-typeset details.quote,
+.md-typeset .admonition.cite,
+.md-typeset details.cite {
+    --futa-admonition: var(--futa-accent1);
+}
+
+.md-typeset .admonition.tip,
+.md-typeset details.tip,
+.md-typeset .admonition.hint,
+.md-typeset details.hint,
+.md-typeset .admonition.important,
+.md-typeset details.important,
+.md-typeset .admonition.success,
+.md-typeset details.success,
+.md-typeset .admonition.check,
+.md-typeset details.check,
+.md-typeset .admonition.done,
+.md-typeset details.done {
+    --futa-admonition: var(--futa-green);
+}
+
+.md-typeset .admonition.warning,
+.md-typeset details.warning,
+.md-typeset .admonition.caution,
+.md-typeset details.caution,
+.md-typeset .admonition.attention,
+.md-typeset details.attention {
+    --futa-admonition: var(--futa-orange);
+}
+
+.md-typeset .admonition.danger,
+.md-typeset details.danger,
+.md-typeset .admonition.error,
+.md-typeset details.error,
+.md-typeset .admonition.failure,
+.md-typeset details.failure,
+.md-typeset .admonition.fail,
+.md-typeset details.fail,
+.md-typeset .admonition.missing,
+.md-typeset details.missing,
+.md-typeset .admonition.bug,
+.md-typeset details.bug {
+    --futa-admonition: var(--futa-red);
+}
+
+/* Every type keeps the same frame: hairline box, lit left edge. Listed with
+   the type class so Material's own per-type `border-color` doesn't win. */
+.md-typeset .admonition[class],
+.md-typeset details[class] {
+    border-color: var(--futa-rule);
+    border-left-color: var(--futa-admonition);
+}
+
+/* --- Tabs ----------------------------------------------------------------- */
+
+.md-typeset .tabbed-labels > label {
+    font-weight: 500;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* --- Footer / pagination --------------------------------------------------
+   PREVIOUS / NEXT read as operator labels; the destination stays plain. */
+
+.md-footer__direction {
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.55rem;
+    opacity: 0.9;
+}
+
+.md-footer__title {
+    font-size: 0.78rem;
+}
+
+.md-footer__link {
+    align-items: center;
+}
+
+.md-footer__inner {
+    border-top: 1px solid var(--futa-rule);
+}
+
+.md-footer-meta {
+    border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.25);
+}
+
+.md-copyright {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.55rem;
+}
+
+@media screen and (min-width: 76.25em) {
+    body {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .md-container,
+    .md-main {
+        min-height: 0;
+    }
+
+    .md-main__inner {
+        height: auto;
+        min-height: 100%;
+    }
+
+    .md-main {
+        overflow-y: auto;
+    }
+
+    .md-footer__inner {
+        padding-block: 0;
+    }
+
+    .md-footer__link {
+        margin-block: 0.2rem;
+    }
+
+    .md-footer__title {
+        margin-bottom: 0;
+    }
+}
+
+/* --- Search results ------------------------------------------------------- */
+
+.md-search-result__meta {
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.6rem;
+}
+
+/* --- Scrollbars -----------------------------------------------------------
+   Firefox honours the pair below; WebKit/Blink needs the ::-webkit rules. */
+
+[data-md-color-scheme='slate'] * {
+    scrollbar-color: var(--futa-accent2) transparent;
+    scrollbar-width: thin;
+}
+
+[data-md-color-scheme='slate'] ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+[data-md-color-scheme='slate'] ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+[data-md-color-scheme='slate'] ::-webkit-scrollbar-thumb {
+    background: rgb(from var(--futa-accent2) r g b / 0.6);
+}
+
+[data-md-color-scheme='slate'] ::-webkit-scrollbar-thumb:hover {
+    background: var(--futa-accent1);
+}
+
+@media screen and (max-width: 44.984375em) {
+    .md-typeset table {
+        min-width: 32rem;
+    }
+
+    .md-typeset table code {
+        white-space: nowrap;
+    }
+
+    .md-typeset h2.futa-path-page + div table {
+        min-width: 0;
+    }
+
+    .md-typeset h2.futa-path-page + div table thead {
+        display: none;
+    }
+
+    .md-typeset h2.futa-path-page + div table tbody,
+    .md-typeset h2.futa-path-page + div table tr,
+    .md-typeset h2.futa-path-page + div table td {
+        display: block;
+        width: 100%;
+    }
+
+    .md-typeset h2.futa-path-page + div table tbody tr {
+        border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.3);
+    }
+
+    .md-typeset h2.futa-path-page + div table tbody tr:first-child {
+        border-top: 0;
+    }
+
+    .md-typeset h2.futa-path-page + div table td {
+        border-top: 0;
+        padding: 0.25rem 0.8rem 0.7rem;
+    }
+
+    .md-typeset h2.futa-path-page + div table td:first-child {
+        color: var(--md-default-fg-color--light);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding-top: 0.7rem;
+        padding-bottom: 0.15rem;
+    }
+
+    .md-typeset h2.futa-path-page + div table td:last-child {
+        font-size: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .md-nav__link,
+    .md-search__form,
+    .md-typeset a,
+    .md-typeset table tbody tr,
+    .md-top {
+        transition: none;
+        animation: none;
+    }
+}

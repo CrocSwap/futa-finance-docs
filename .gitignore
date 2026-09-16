@@ -1,0 +1,6 @@
+# Local MkDocs virtualenv and build output
+website/.venv/
+website/site/
+__pycache__/
+*.pyc
+.DS_Store

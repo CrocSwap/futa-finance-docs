@@ -1,0 +1,99 @@
+site_name: FUTA Docs
+site_description: Public documentation for FUTA, a Solana protocol for launching ticker markets.
+site_url: https://docs.futa.finance/
+repo_url: https://github.com/CrocSwap/futa-finance-docs
+repo_name: CrocSwap/futa-finance-docs
+edit_uri: edit/main/website/docs/
+
+docs_dir: docs
+strict: true
+# SUMMARY.md is the navigation source (see hooks/), not a published page.
+exclude_docs: |
+    SUMMARY.md
+
+theme:
+    name: material
+    # The FU/TA mark, on the black header bar.
+    logo: assets/logo/futa_icon.svg
+    favicon: assets/logo/futa_icon.svg
+    # Fira Mono is self-hosted from docs/assets/fonts (see stylesheets/extra.css),
+    # so Material must not also pull a typeface from Google Fonts.
+    font: false
+    features:
+        - navigation.instant
+        - navigation.tracking
+        - navigation.sections
+        - navigation.indexes
+        - navigation.top
+        - navigation.footer
+        - content.action.edit
+        - content.code.copy
+        - search.highlight
+        - search.suggest
+        - toc.follow
+        - content.tabs.link
+    palette:
+        - media: '(prefers-color-scheme)'
+          toggle:
+              icon: material/brightness-auto
+              name: Follow system theme
+        - media: '(prefers-color-scheme: light)'
+          scheme: default
+          primary: custom
+          accent: custom
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+        - media: '(prefers-color-scheme: dark)'
+          scheme: slate
+          primary: custom
+          accent: custom
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+
+extra_css:
+    - stylesheets/extra.css
+
+extra_javascript:
+    - javascripts/ai-context.js
+
+extra:
+    generator: false
+    social:
+        - icon: fontawesome/solid/terminal
+          link: https://futa.finance/
+          name: futa.finance
+        - icon: fontawesome/brands/x-twitter
+          link: https://x.com/futa_finance
+          name: '@futa_finance'
+        - icon: fontawesome/brands/github
+          link: https://github.com/CrocSwap/futa-finance-docs
+          name: CrocSwap/futa-finance-docs
+
+copyright: FU/TA — permissionless ticker auctions on Solana
+
+plugins:
+    - search
+
+hooks:
+    - hooks/nav_from_summary.py
+    - hooks/agent_markdown.py
+
+markdown_extensions:
+    - admonition
+    - attr_list
+    - md_in_html
+    - tables
+    - toc:
+          permalink: true
+    - pymdownx.details
+    - pymdownx.superfences:
+          custom_fences:
+              - name: mermaid
+                class: mermaid
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.tabbed:
+          alternate_style: true
