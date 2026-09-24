@@ -1,9 +1,8 @@
 site_name: FUTA Docs
 site_description: Public documentation for FUTA, a Solana protocol for launching ticker markets.
-site_url: https://docs.futa.finance/
-repo_url: https://github.com/CrocSwap/futa-finance-docs
-repo_name: CrocSwap/futa-finance-docs
-edit_uri: edit/main/website/docs/
+# The GitHub Pages address until the docs.futa.finance DNS record is set up;
+# restoring the custom domain means changing this and adding docs/CNAME back.
+site_url: https://crocswap.github.io/futa-finance-docs/
 
 docs_dir: docs
 strict: true
@@ -26,37 +25,24 @@ theme:
         - navigation.indexes
         - navigation.top
         - navigation.footer
-        - content.action.edit
         - content.code.copy
         - search.highlight
         - search.suggest
         - toc.follow
         - content.tabs.link
+    # Dark only, like the app. One scheme, so Material renders no toggle.
     palette:
-        - media: '(prefers-color-scheme)'
-          toggle:
-              icon: material/brightness-auto
-              name: Follow system theme
-        - media: '(prefers-color-scheme: light)'
-          scheme: default
-          primary: custom
-          accent: custom
-          toggle:
-              icon: material/brightness-7
-              name: Switch to dark mode
-        - media: '(prefers-color-scheme: dark)'
-          scheme: slate
-          primary: custom
-          accent: custom
-          toggle:
-              icon: material/brightness-4
-              name: Switch to light mode
+        scheme: slate
+        primary: custom
+        accent: custom
 
 extra_css:
     - stylesheets/extra.css
 
 extra_javascript:
     - javascripts/ai-context.js
+    - javascripts/nav-state.js
+    - javascripts/bookmarks.js
 
 extra:
     generator: false
@@ -67,9 +53,6 @@ extra:
         - icon: fontawesome/brands/x-twitter
           link: https://x.com/futa_finance
           name: '@futa_finance'
-        - icon: fontawesome/brands/github
-          link: https://github.com/CrocSwap/futa-finance-docs
-          name: CrocSwap/futa-finance-docs
 
 copyright: FU/TA — permissionless ticker auctions on Solana
 
@@ -79,6 +62,9 @@ plugins:
 hooks:
     - hooks/nav_from_summary.py
     - hooks/agent_markdown.py
+    - hooks/topic_cards.py
+    - hooks/permalink_icon.py
+    - hooks/last_modified.py
 
 markdown_extensions:
     - admonition

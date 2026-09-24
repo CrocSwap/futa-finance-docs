@@ -48,6 +48,18 @@ def _agent_index(config) -> str:
     )
 
 
+def on_post_page(output: str, page, config, **kwargs) -> str:
+    """Point each rendered page at its Markdown counterpart.
+
+    The Ask AI menu reads this link, since a page's URL alone does not say
+    whether its source was `name.md` or `name/README.md`.
+    """
+    published_path = _published_markdown_path(page.file.src_uri)
+    href = f"/{published_path.as_posix()}"
+    link = f'<link rel="alternate" type="text/markdown" href="{href}">'
+    return output.replace("</head>", f"{link}\n</head>", 1)
+
+
 def on_post_build(config, **kwargs) -> None:
     docs_dir = Path(config.docs_dir)
     site_dir = Path(config.site_dir)

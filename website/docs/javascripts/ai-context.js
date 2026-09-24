@@ -39,24 +39,15 @@
     `;
 
     const markdownUrlForPage = () => {
-        const editLink = document.querySelector(
-            'a.md-content__button[href*="/website/docs/"]',
+        // Published by hooks/agent_markdown.py on every page.
+        const markdownLink = document.querySelector(
+            'link[rel="alternate"][type="text/markdown"]',
         );
-        const sourceMarker = '/website/docs/';
-        const sourcePathname = editLink ? new URL(editLink.href).pathname : '';
-        const sourceStart = sourcePathname.indexOf(sourceMarker);
-
-        if (sourceStart !== -1) {
-            const sourcePath = decodeURIComponent(
-                sourcePathname.slice(sourceStart + sourceMarker.length),
-            );
-            let publishedPath = sourcePath;
-            if (sourcePath === 'README.md') {
-                publishedPath = 'index.md';
-            } else if (sourcePath.endsWith('/README.md')) {
-                publishedPath = `${sourcePath.slice(0, -'README.md'.length)}index.md`;
-            }
-            return new URL(`/${publishedPath}`, window.location.origin).href;
+        if (markdownLink) {
+            return new URL(
+                markdownLink.getAttribute('href'),
+                window.location.origin,
+            ).href;
         }
 
         const url = new URL(window.location.href);

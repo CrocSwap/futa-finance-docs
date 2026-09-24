@@ -6,7 +6,7 @@ FUTA gives each ticker one market within the protocol. A ticker begins with a pu
 
 | I want to…                                     | Read                                                                                            |
 | ---------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Explore without connecting a wallet            | [Explore an auction and market](start-here/explore-an-auction.md)                               |
+| Explore without connecting a wallet            | [Start here](start-here.md)                                                                     |
 | Connect an existing Solana wallet              | [Connect a wallet](guides/connect-a-wallet.md#connect-an-existing-wallet)                       |
 | Create a wallet with a login                   | [Connect a wallet](guides/connect-a-wallet.md#sign-in-with-email-google-or-apple)               |
 | Add USDC or SOL to an embedded wallet          | [Fund an embedded wallet](guides/fund-an-embedded-wallet.md)                                    |

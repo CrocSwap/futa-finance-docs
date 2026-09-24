@@ -17,6 +17,17 @@ are kept separately and are not published.
 - `hooks/nav_from_summary.py` translates `docs/SUMMARY.md` into MkDocs navigation.
 - `hooks/agent_markdown.py` publishes Markdown copies and an `llms.txt` index
   for AI agents.
+- `hooks/topic_cards.py` renders a group page's list of topic links (for
+  example `docs/use-futa/concepts/README.md`) as a grid of cards on the site.
+  A card's text is the topic page's optional `description:` front matter, or
+  the first sentence of its intro when that field is absent. The Markdown
+  itself stays a plain list for GitBook and the agent copies.
+- `hooks/last_modified.py` prints a page's optional `last_modified:` front
+  matter (for example `last_modified: 2026-09-23`) at the foot of the table of
+  contents rail. Pages without the field show nothing there.
+- `docs/javascripts/bookmarks.js` adds a bookmark toggle beside each page title
+  and lists bookmarked pages in the right rail. Bookmarks are kept only in the
+  reader's browser (`localStorage`, key `futa-docs:bookmarks`).
 - `scripts/check-docs.sh` validates navigation and internal links.
 - `/.gitbook.yaml` at the repository root points GitBook at `website/docs`.
 
@@ -52,5 +63,7 @@ these files to hand the current page to ChatGPT, Claude, or another AI tool.
 
 `.github/workflows/docs.yml` checks every pull request that touches `website/`
 and builds the site with MkDocs; the site is published to GitHub Pages at
-<https://docs.futa.finance/>. The custom domain comes from `docs/CNAME`, which
-is built into the Pages artifact.
+<https://crocswap.github.io/futa-finance-docs/>. It will move to
+`docs.futa.finance` once that DNS record exists: the custom domain is then set
+by adding a `docs/CNAME` file (containing `docs.futa.finance`), which is built
+into the Pages artifact, and pointing `site_url` in `mkdocs.yml` at it.

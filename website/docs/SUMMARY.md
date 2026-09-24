@@ -5,8 +5,7 @@
 ## Use FUTA
 
 - [Choose a task](use-futa/README.md)
-- [Start here](use-futa/start-here/README.md)
-    - [Explore an auction and market](use-futa/start-here/explore-an-auction.md)
+- [Start here](use-futa/start-here.md)
 - [Guides](use-futa/guides/README.md)
     - [Connect a wallet](use-futa/guides/connect-a-wallet.md)
     - [Fund an embedded wallet](use-futa/guides/fund-an-embedded-wallet.md)

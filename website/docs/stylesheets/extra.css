@@ -1,20 +1,23 @@
 /* ---------------------------------------------------------------------------
    FU/TA documentation theme
    ---------------------------------------------------------------------------
-   Material for MkDocs, dressed in the app's aesthetic: a dark terminal surface,
-   Fira Mono throughout, hard corners everywhere, and section headers set as
-   tracked uppercase operator labels.
+   Material for MkDocs, dressed as the FU/TA app: a dark terminal surface, Fira
+   Mono throughout, hard corners everywhere, and the app's own colour, type and
+   spacing scale. The page layout follows the app's blog: 300px rails at the
+   page edges with an 800px reading column centred between them.
 
-   The colour values are the published brand tokens (public/brand-kit/
-   futa_tokens.css); the light palette is the brand press sheet (ink on paper).
-   Only Material's own custom properties are reassigned — the layout and
-   components stay stock, so a Material upgrade cannot silently break this.
+   The tokens below copy the app's design tokens by name and value (the colour
+   values are also the published brand kit, public/brand-kit/futa_tokens.css).
+   Every rule reads from them; no raw colour appears outside the token block.
+   Only Material's own custom properties and element styles are overridden —
+   its layout engine and components stay stock, so a Material upgrade cannot
+   silently break this.
    --------------------------------------------------------------------------- */
 
 /* --- Typeface -------------------------------------------------------------
-   Self-hosted Fira Mono, matching the app (index.html). `font: false` in
-   mkdocs.yml stops Material from loading a Google font, which leaves
-   --md-text-font / --md-code-font free for us to point at these faces. */
+   Self-hosted Fira Mono, matching the app. `font: false` in mkdocs.yml stops
+   Material from loading a Google font, which leaves --md-text-font /
+   --md-code-font free for us to point at these faces. */
 
 @font-face {
     font-family: 'Fira Mono';
@@ -40,28 +43,68 @@
     src: url('../assets/fonts/fira-mono-700.woff2') format('woff2');
 }
 
-/* --- Brand tokens ---------------------------------------------------------
-   Verbatim from the brand kit, plus the two derived values (a hairline rule and
-   a translucent panel fill) the docs need and the app keeps component-local. */
+/* --- Base scale -----------------------------------------------------------
+   Material sets the root to 125% (137.5% and 150% on wide screens) and sizes
+   everything in rem from there. The app uses the browser's 16px rem, so pin it:
+   the app's rem tokens then mean the same thing here, and Material's own
+   chrome scales down with them. Material's breakpoints are in `em`, which
+   media queries resolve against the browser default, so they do not move. */
+
+html {
+    font-size: 100%;
+}
+
+/* --- App tokens ----------------------------------------------------------- */
 
 :root {
-    --futa-bg1: hsl(220 19% 6%);
-    --futa-bg2: hsl(220 13% 9%);
-    --futa-bg3: hsl(214 11% 12%);
-    --futa-fg1: hsl(183 30% 74%);
-    --futa-fg2: hsl(183 10% 60%);
-    --futa-fg3: hsl(183 10% 32%);
-    --futa-accent1: hsl(183 30% 74%);
-    --futa-accent2: hsl(188 11% 40%);
-    --futa-green: hsl(153 84% 66%);
-    --futa-red: hsl(3 84% 66%);
-    --futa-orange: hsl(33 84% 66%);
+    --bg1: hsl(220 19% 6%);
+    --bg2: hsl(220 13% 9%);
+    --bg3: hsl(214 11% 12%);
+    --fg1: hsl(183 30% 74%);
+    --fg2: hsl(183 10% 60%);
+    --fg3: hsl(183 10% 32%);
+    --accent1: hsl(183 30% 74%);
+    --accent2: hsl(188 11% 40%);
+    --green: hsl(153 84% 66%);
+    --red: hsl(3 84% 66%);
+    --orange: hsl(33 84% 66%);
+    --selection-bg: rgb(0 255 255 / 0.6);
+    --selection-fg: #000000;
 
-    /* Press-sheet (light) equivalents. */
-    --futa-ink: hsl(220 12% 9%);
-    --futa-ink-muted: hsl(187 8% 30%);
-    --futa-paper: hsl(0 0% 100%);
-    --futa-paper-2: hsl(200 10% 97%);
+    --status-positive-fg: var(--green);
+    --status-warning-fg: var(--orange);
+    --status-danger-fg: var(--red);
+    --status-positive-bg: rgb(from var(--status-positive-fg) r g b / 0.1);
+    --status-warning-bg: rgb(from var(--status-warning-fg) r g b / 0.1);
+    --status-danger-bg: rgb(from var(--status-danger-fg) r g b / 0.1);
+    --status-positive-border: rgb(from var(--status-positive-fg) r g b / 0.3);
+    --status-warning-border: rgb(from var(--status-warning-fg) r g b / 0.3);
+    --status-danger-border: rgb(from var(--status-danger-fg) r g b / 0.3);
+
+    --spacing-tiny: 0.125rem; /* 2px */
+    --spacing-small: 0.25rem; /* 4px */
+    --spacing-standard: 0.5rem; /* 8px */
+    --spacing-large: 1rem; /* 16px */
+    --spacing-xlarge: 2rem; /* 32px */
+
+    --font-primary: 'Fira Mono', monospace;
+    --font-size-tiny: 0.625rem; /* 10px */
+    --font-size-small: 0.75rem; /* 12px */
+    --font-size-medium: 1rem; /* 16px */
+    --font-size-large: 1.5rem; /* 24px */
+    --font-weight-standard: 400;
+    --font-weight-bold: 500;
+    --font-line-height-normal: 1.5;
+    --font-line-height-loose: 1.75;
+    --font-letter-spacing-wide: 0.05rem;
+
+    --transition-fast: 150ms;
+
+    /* The app's blog layout: rail width and reading column. */
+    --docs-rail-width: 300px;
+    --docs-column-width: 800px;
+    /* Gap between the header and the top of all three columns. */
+    --docs-main-inset: 24px;
 
     --md-text-font: 'Fira Mono';
     --md-code-font: 'Fira Mono';
@@ -70,103 +113,72 @@
     --md-shape-radius: 0;
 }
 
-/* Reserve the scrollbar gutter so pages that fit the viewport don't shift
-   horizontally relative to pages that scroll (noticeable with instant nav). */
-html {
-    scrollbar-gutter: stable;
-}
-
-/* --- Palette: dark (terminal) --------------------------------------------- */
+/* --- Material palette -----------------------------------------------------
+   The one scheme (mkdocs.yml). Material's variables point at the tokens. */
 
 [data-md-color-scheme='slate'] {
     --md-hue: 220;
 
-    --md-default-bg-color: var(--futa-bg1);
-    --md-default-bg-color--light: var(--futa-bg2);
-    --md-default-bg-color--lighter: var(--futa-bg3);
-    --md-default-bg-color--lightest: var(--futa-bg3);
+    --md-default-bg-color: var(--bg1);
+    --md-default-bg-color--light: var(--bg2);
+    --md-default-bg-color--lighter: var(--bg3);
+    --md-default-bg-color--lightest: var(--bg3);
 
-    --md-default-fg-color: hsl(183 12% 88%);
-    --md-default-fg-color--light: var(--futa-fg2);
-    --md-default-fg-color--lighter: var(--futa-fg3);
-    --md-default-fg-color--lightest: rgb(from var(--futa-fg3) r g b / 0.35);
+    --md-default-fg-color: var(--fg1);
+    --md-default-fg-color--light: var(--fg2);
+    --md-default-fg-color--lighter: var(--fg3);
+    --md-default-fg-color--lightest: var(--bg3);
 
-    --md-primary-fg-color: hsl(220 19% 4%);
-    --md-primary-bg-color: var(--futa-fg1);
-    --md-primary-bg-color--light: var(--futa-fg2);
+    --md-primary-fg-color: var(--bg1);
+    --md-primary-bg-color: var(--fg1);
+    --md-primary-bg-color--light: var(--fg2);
 
-    --md-accent-fg-color: var(--futa-accent1);
-    --md-accent-fg-color--transparent: rgb(
-        from var(--futa-accent1) r g b / 0.1
-    );
-    --md-accent-bg-color: var(--futa-bg1);
+    --md-accent-fg-color: var(--accent1);
+    --md-accent-fg-color--transparent: rgb(from var(--accent1) r g b / 0.1);
+    --md-accent-bg-color: var(--bg1);
 
-    --md-typeset-color: hsl(183 12% 86%);
-    /* A step brighter and more saturated than body text: the brand's own cyan
-       reads as prose at body weight, so links need the extra chroma to carry
-       on their own. */
-    --md-typeset-a-color: hsl(183 62% 70%);
-    --md-typeset-mark-color: rgb(from var(--futa-accent1) r g b / 0.25);
-    --md-typeset-kbd-color: var(--futa-bg3);
-    --md-typeset-kbd-accent-color: var(--futa-accent2);
-    --md-typeset-kbd-border-color: var(--futa-bg1);
-    --md-typeset-table-color: rgb(from var(--futa-accent2) r g b / 0.4);
+    --md-typeset-color: var(--fg2);
+    --md-typeset-a-color: var(--accent1);
+    --md-typeset-mark-color: rgb(from var(--accent1) r g b / 0.25);
+    --md-typeset-kbd-color: var(--bg3);
+    --md-typeset-kbd-accent-color: var(--accent2);
+    --md-typeset-kbd-border-color: var(--bg1);
+    --md-typeset-table-color: var(--accent2);
 
-    --md-code-fg-color: hsl(183 14% 82%);
-    --md-code-bg-color: var(--futa-bg2);
-    --md-code-hl-color: rgb(from var(--futa-accent1) r g b / 0.2);
-    --md-code-hl-number-color: var(--futa-orange);
-    --md-code-hl-string-color: var(--futa-green);
-    --md-code-hl-keyword-color: var(--futa-accent1);
-    --md-code-hl-name-color: var(--md-code-fg-color);
-    --md-code-hl-function-color: var(--futa-fg1);
-    --md-code-hl-comment-color: var(--futa-fg3);
-    --md-code-hl-operator-color: var(--futa-fg2);
-    --md-code-hl-punctuation-color: var(--futa-fg2);
+    --md-code-fg-color: var(--fg1);
+    --md-code-bg-color: var(--bg3);
+    --md-code-hl-color: rgb(from var(--accent1) r g b / 0.2);
+    --md-code-hl-number-color: var(--orange);
+    --md-code-hl-string-color: var(--green);
+    --md-code-hl-keyword-color: var(--accent1);
+    --md-code-hl-name-color: var(--fg1);
+    --md-code-hl-function-color: var(--fg1);
+    --md-code-hl-comment-color: var(--fg3);
+    --md-code-hl-operator-color: var(--fg2);
+    --md-code-hl-punctuation-color: var(--fg2);
+    --md-code-hl-constant-color: var(--orange);
+    --md-code-hl-special-color: var(--accent1);
+    --md-code-hl-variable-color: var(--fg1);
+    --md-code-hl-generic-color: var(--fg2);
 
-    --md-footer-bg-color: hsl(220 19% 4%);
-    --md-footer-bg-color--dark: var(--futa-bg1);
-    --md-footer-fg-color: var(--futa-fg1);
-    --md-footer-fg-color--light: var(--futa-fg2);
-    --md-footer-fg-color--lighter: var(--futa-fg3);
-
-    --futa-rule: rgb(from var(--futa-accent2) r g b / 0.45);
-    --futa-panel: rgb(from var(--futa-bg3) r g b / 0.55);
-    --futa-label-fg: var(--futa-fg2);
+    --md-footer-bg-color: var(--bg1);
+    --md-footer-bg-color--dark: var(--bg1);
+    --md-footer-fg-color: var(--fg1);
+    --md-footer-fg-color--light: var(--fg2);
+    --md-footer-fg-color--lighter: var(--fg3);
 
     color-scheme: dark;
 }
 
-/* --- Palette: light (press sheet) ----------------------------------------- */
-
-[data-md-color-scheme='default'] {
-    --md-default-bg-color: var(--futa-paper);
-    --md-default-bg-color--light: var(--futa-paper-2);
-    --md-default-fg-color: var(--futa-ink);
-    --md-default-fg-color--light: var(--futa-ink-muted);
-    --md-default-fg-color--lighter: hsl(187 8% 55%);
-
-    --md-primary-fg-color: hsl(220 12% 7%);
-    --md-primary-bg-color: hsl(183 22% 82%);
-
-    --md-accent-fg-color: hsl(188 34% 32%);
-    --md-accent-fg-color--transparent: hsl(188 34% 32% / 0.1);
-
-    --md-typeset-color: var(--futa-ink);
-    --md-typeset-a-color: hsl(188 62% 26%);
-    --md-typeset-table-color: hsl(187 8% 30% / 0.4);
-
-    --md-code-bg-color: var(--futa-paper-2);
-    --md-code-fg-color: hsl(220 12% 18%);
-
-    --md-footer-bg-color: hsl(220 12% 7%);
-    --md-footer-bg-color--dark: hsl(220 12% 5%);
-
-    --futa-rule: hsl(187 8% 30% / 0.4);
-    --futa-panel: var(--futa-paper-2);
-    --futa-label-fg: var(--futa-ink-muted);
-
-    color-scheme: light;
+/* Reserve the scrollbar gutter so pages that fit the viewport don't shift
+   horizontally relative to pages that scroll (noticeable with instant nav).
+   On the gutter of whichever element scrolls: the page below 76.25em,
+   .md-main above it (see the footer section), so the scrollbar sits on the
+   page's right edge rather than beside an empty strip. */
+@media screen and (max-width: 76.234375em) {
+    html {
+        scrollbar-gutter: stable;
+    }
 }
 
 /* --- Hard corners ---------------------------------------------------------
@@ -193,8 +205,8 @@ html {
 }
 
 ::selection {
-    background: rgb(0 255 255 / 0.6);
-    color: #000;
+    background: var(--selection-bg);
+    color: var(--selection-fg);
 }
 
 a:focus-visible,
@@ -203,194 +215,697 @@ button:focus-visible,
 .md-search__input:focus-visible,
 .md-typeset .md-button:focus-visible,
 summary:focus-visible {
-    outline: 2px solid var(--futa-accent1);
+    outline: 2px solid var(--accent1);
     outline-offset: 2px;
 }
 
+/* --- Layout ---------------------------------------------------------------
+   The app's blog: full-width page, 300px rails flush to the edges, the
+   reading column at most 800px and centred between them. Below 76.25em
+   Material folds both rails into its drawer, and its own layout stands. */
+
+.md-grid {
+    max-width: none;
+}
+
+@media screen and (min-width: 76.25em) {
+    /* The three columns share one top line: each starts --spacing-large
+       below the top of the main area, so the sidebars' first bars
+       (/FUTA DOCS, /TABLE OF CONTENTS), the Ask AI menu and the tops of the
+       page title's capitals line up. */
+    .md-main__inner {
+        margin-top: var(--docs-main-inset);
+    }
+
+    /* The rails hold still while the page scrolls: each sticks at the same
+       inset it starts at, and is exactly as tall as the rest of .md-main's
+       viewport (100cqh — .md-main is the size container, see the footer
+       section), so the content never pushes it. The primary rail's list
+       scrolls inside it instead. */
+    .md-sidebar {
+        box-sizing: border-box;
+        width: var(--docs-rail-width);
+        height: calc(100cqh - var(--docs-main-inset));
+        padding: var(--spacing-large);
+        /* Material's script sets the sidebars' sticky offset inline to the
+           header's height, for a page where the window scrolls under the
+           header. Here .md-main is the scroller and already starts below the
+           header, so that offset pushed both sidebars down past the content
+           column. !important is the only way past the inline style. */
+        top: var(--docs-main-inset) !important;
+    }
+
+    /* Reaching either end of the list must not start scrolling the page. */
+    .md-sidebar--primary .md-sidebar__scrollwrap {
+        overscroll-behavior: contain;
+    }
+
+    /* The list's scrollbar is hidden at rest rather than Material's dimmed
+       thumb, and fades in to Material's accent while the pointer or focus is
+       in the rail, on the nav links' hover timing. The ::-webkit rules are the
+       same states for browsers without scrollbar-color, where the global
+       thumb colour would otherwise show; a scrollbar pseudo-element does not
+       transition, so there it is an instant swap. */
+    .md-sidebar--primary .md-sidebar__scrollwrap {
+        scrollbar-color: transparent transparent;
+        transition: scrollbar-color var(--transition-fast);
+    }
+
+    .md-sidebar--primary .md-sidebar__scrollwrap:is(:hover, :focus-within) {
+        scrollbar-color: var(--md-accent-fg-color) transparent;
+    }
+
+    .md-sidebar--primary .md-sidebar__scrollwrap::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+
+    .md-sidebar--primary
+        .md-sidebar__scrollwrap:is(
+            :hover,
+            :focus-within
+        )::-webkit-scrollbar-thumb {
+        background-color: var(--md-accent-fg-color);
+    }
+
+    /* Matches Material's own margin rules for this element in specificity,
+       and comes later, so the column centres instead of hugging the rails. */
+    [dir] .md-sidebar:not([hidden]) ~ .md-content > .md-content__inner,
+    .md-content > .md-content__inner {
+        max-width: var(--docs-column-width);
+        margin-inline: auto;
+        padding: var(--spacing-large) var(--spacing-xlarge)
+            var(--spacing-xlarge);
+        box-sizing: content-box;
+    }
+
+    /* Material spaces the column's content 0.4rem down with this spacer;
+       the column's top padding already does that job here. */
+    .md-content__inner::before {
+        height: 0;
+    }
+}
+
 /* --- Header ---------------------------------------------------------------
-   Black bar, a hairline accent rule under it (the app's route frame reads the
-   same way), and an operator-label site title. */
+   The app's surface with a hairline accent rule under it, as the app's route
+   frame reads, and a panel-label site title. */
 
 .md-header {
-    border-bottom: 1px solid var(--futa-rule);
+    background-color: var(--bg1);
+    border-bottom: 1px solid var(--accent2);
     box-shadow: none;
 }
 
 .md-header--shadow {
-    box-shadow: 0 0 0.4rem rgb(0 0 0 / 0.4);
+    box-shadow: none;
 }
 
 .md-header__title {
-    font-weight: 500;
-    letter-spacing: 0.14em;
+    font-size: var(--font-size-medium);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
-    font-size: 0.72rem;
 }
 
 .md-header__topic:first-child .md-ellipsis {
-    font-weight: 500;
+    font-weight: var(--font-weight-standard);
 }
 
 .md-logo img {
     /* The mark ships with its own dark plate; keep it crisp against the bar. */
-    height: 1.4rem;
-    width: 1.4rem;
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 .md-search__form {
-    border: 1px solid rgb(from var(--futa-accent2) r g b / 0.5);
-    background-color: var(--futa-bg3);
+    border: 1px solid var(--accent2);
+    background-color: var(--bg2);
 }
 
 .md-search__form:hover,
 [data-md-toggle='search']:checked ~ .md-header .md-search__form {
-    border-color: var(--futa-accent1);
-    background-color: var(--futa-bg2);
+    border-color: var(--accent1);
+    background-color: var(--bg2);
+}
+
+.md-search__input {
+    font-size: var(--font-size-small);
 }
 
 .md-search__input::placeholder {
-    letter-spacing: 0.08em;
+    color: var(--fg3);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
-    font-size: 0.68rem;
 }
 
 /* --- Navigation -----------------------------------------------------------
-   Sidebar section titles become tracked operator labels; the active page gets
-   the app's `>` row marker instead of a colour change alone. */
+   The blog's sidebar: section titles are the app's panel-label bars with a
+   `/` prefix (`/BLOG POSTS`), pages are rows that fill on the active entry,
+   and nested lists and the table of contents hang off a hairline track. */
 
 .md-nav {
-    font-size: 0.68rem;
-}
-
-.md-nav__title {
-    color: var(--futa-label-fg);
-    font-weight: 500;
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-}
-
-.md-nav--secondary .md-nav__title {
-    box-shadow: none;
-    border-bottom: 1px dashed var(--futa-rule);
-    background: transparent;
-}
-
-.md-nav__item--section > .md-nav__link {
-    color: var(--futa-label-fg);
-    font-weight: 500;
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
+    font-size: var(--font-size-small);
+    line-height: var(--font-line-height-normal);
 }
 
 .md-nav__link {
-    transition: color 120ms linear;
+    transition:
+        color var(--transition-fast),
+        background-color var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+/* The collapse-all button shows on desktop section bars only; below
+   76.25em sections are drawer panels. */
+.futa-nav-collapse {
+    display: none;
 }
 
 .md-nav__link--active,
 .md-nav__link--active code {
-    color: var(--md-typeset-a-color);
+    color: var(--accent1);
 }
 
-/* Anchors only: with `navigation.indexes`, a section's expand toggle is a
-   <label> that carries the same active class, and it would take a second
-   marker — floated to the right, where the label sits. */
-.md-nav__item a.md-nav__link--active {
-    position: relative;
+@media screen and (min-width: 76.25em) {
+    /* Panel-label bars: the site title, the section headings, and the table
+       of contents heading. The `/` is decoration, so it has empty alt text
+       and screen readers read the label alone. */
+    .md-nav--primary .md-nav__title,
+    .md-nav--secondary .md-nav__title,
+    .futa-bookmarks .md-nav__title,
+    .md-nav--primary .md-nav__item--section > .md-nav__link {
+        display: flex;
+        gap: 0;
+        align-items: center;
+        margin: 0 0 var(--spacing-standard);
+        padding: var(--spacing-small) var(--spacing-standard);
+        background: var(--bg2);
+        box-shadow: none;
+        color: var(--fg1);
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-standard);
+        line-height: 1.25;
+        letter-spacing: var(--font-letter-spacing-wide);
+        text-transform: uppercase;
+    }
+
+    .md-nav__title::before,
+    .md-nav__item--section > .md-nav__link::before {
+        content: '/' / '';
+    }
+
+    /* A section with an index page renders its heading as a container row
+       holding an <a>; that link is the label text, not a page row. */
+    .md-nav--primary
+        .md-nav__item--section
+        > .md-nav__container
+        > a.md-nav__link {
+        padding: 0;
+        background: none;
+        color: inherit;
+    }
+
+    .md-nav--primary
+        .md-nav__item--section
+        > .md-nav__container
+        > a.md-nav__link::before {
+        content: none;
+    }
+
+    .md-nav--primary
+        .md-nav__item--section
+        > .md-nav__container
+        > a.md-nav__link--active {
+        color: var(--accent1);
+    }
+
+    /* Collapse-all, at the bar's right end (nav-state.js). A 20px target
+       whose negative block margin keeps the bar at its label's height. */
+    .md-nav--primary .futa-nav-collapse {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: calc(-1 * var(--spacing-small)) calc(-1 * var(--spacing-small))
+            calc(-1 * var(--spacing-small)) auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--fg2);
+        cursor: pointer;
+        transition:
+            color var(--transition-fast),
+            background-color var(--transition-fast);
+    }
+
+    .md-nav--primary .futa-nav-collapse[hidden] {
+        display: none;
+    }
+
+    .md-nav--primary .futa-nav-collapse svg {
+        display: block;
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+
+    .md-nav--primary .futa-nav-collapse:hover {
+        background-color: var(--bg3);
+        color: var(--fg1);
+    }
+
+    .md-nav--primary .futa-nav-collapse:focus-visible {
+        outline-offset: 0;
+    }
+
+    /* Material insets the rail's contents to a fixed 11.5rem and indents each
+       list; the rail is wider here and the bars run its full width. Prefixed
+       with [dir] to match Material's own selectors. */
+    [dir] .md-sidebar__inner {
+        padding-inline: 0;
+    }
+
+    [dir] .md-nav--primary .md-nav__list,
+    [dir] .md-nav--secondary .md-nav__list {
+        padding-left: 0;
+    }
+
+    [dir] .md-nav--primary .md-nav__item > .md-nav__link,
+    [dir] .md-nav--secondary .md-nav__item > .md-nav__link {
+        margin-right: 0;
+    }
+
+    /* Material pulls each section's page list 0.6rem left; without the
+       [dir] prefix this loses to that rule, and the rows (and their hover
+       `>` marker) slide under the scroll area's clipped left edge. */
+    [dir] .md-nav__item--section > .md-nav {
+        margin-left: 0;
+    }
+
+    .md-nav__item--section {
+        margin: var(--spacing-large) 0;
+    }
+
+    /* Page rows. */
+    .md-nav--primary .md-nav__link {
+        position: relative;
+        margin-top: var(--spacing-tiny);
+        padding: var(--spacing-tiny) var(--spacing-standard) var(--spacing-tiny)
+            20px;
+        color: var(--fg1);
+    }
+
+    /* A section index page puts its <a> inside a container row: the row holds
+       the padding, the link inside it does not. */
+    .md-nav--primary .md-nav__container {
+        padding: 0;
+    }
+
+    .md-nav--primary .md-nav__container > a.md-nav__link {
+        flex-grow: 1;
+        margin-top: 0;
+    }
+
+    /* Only page rows — a topic such as "Single-price auctions" — highlight:
+       the blog's `>` marker and a raised fill on hover, the accent fill on
+       the current page. Section rows (a nested group such as "Concepts",
+       whether or not it has an index page) never do; they are headings
+       that open and close their list. */
+    .md-nav--primary
+        .md-nav__item:not(.md-nav__item--nested)
+        > a.md-nav__link:hover {
+        background-color: var(--bg3);
+        color: var(--fg1);
+    }
+
+    .md-nav--primary
+        .md-nav__item:not(.md-nav__item--nested)
+        > a.md-nav__link::before {
+        content: '>' / '';
+        position: absolute;
+        left: 5px;
+        opacity: 0;
+    }
+
+    .md-nav--primary
+        .md-nav__item:not(.md-nav__item--nested)
+        > a.md-nav__link:is(:hover, .md-nav__link--active)::before {
+        opacity: 1;
+    }
+
+    /* Listed with :hover and :focus: Material colours a focused link in the
+       active branch with the accent (`.md-nav__item--active >
+       .md-nav__link:focus`), which on this fill made the text vanish after
+       clicking the current page's row. */
+    .md-nav--primary
+        .md-nav__item:not(.md-nav__item--nested)
+        > a.md-nav__link--active,
+    .md-nav--primary
+        .md-nav__item:not(.md-nav__item--nested)
+        > a.md-nav__link--active:is(:hover, :focus) {
+        background-color: var(--accent1);
+        color: var(--bg1);
+    }
+
+    /* Section rows stay plain in every state, including Material's own
+       hover/focus/active colouring. The top-level section bars (/USE FUTA)
+       keep their panel-label fill. */
+    .md-nav--primary
+        .md-nav__item--nested:not(.md-nav__item--section)
+        > .md-nav__link,
+    .md-nav--primary
+        .md-nav__item--nested:not(.md-nav__item--section)
+        > .md-nav__link
+        > .md-nav__link {
+        background: none;
+        color: var(--fg1);
+    }
+
+    /* Nested page lists hang off the blog's hairline track. */
+    .md-nav__item--nested:not(.md-nav__item--section)
+        > .md-nav
+        > .md-nav__list {
+        margin: var(--spacing-small) 0 var(--spacing-small) 20px;
+        border-left: 1px solid var(--accent2);
+    }
+
+    /* Table of contents: the blog's per-post outline. */
+    .md-nav--secondary .md-nav__list {
+        margin-left: 20px;
+        border-left: 1px solid var(--accent2);
+    }
+
+    .md-nav--secondary .md-nav__list .md-nav__list {
+        margin-left: 0;
+        border-left: 0;
+    }
+
+    .md-nav--secondary .md-nav__item > .md-nav__link {
+        margin: 1px 0 0 -1px;
+        padding: var(--spacing-tiny) var(--spacing-standard);
+        border-left: 2px solid transparent;
+        color: var(--fg2);
+        font-size: var(--font-size-tiny);
+    }
+
+    .md-nav--secondary .md-nav .md-nav .md-nav__link {
+        padding-left: calc(var(--spacing-standard) + var(--spacing-large));
+    }
+
+    .md-nav--secondary .md-nav__link:hover {
+        background-color: var(--bg3);
+        color: var(--fg1);
+    }
+
+    .md-nav--secondary .md-nav__link--active {
+        border-left-color: var(--accent1);
+        color: var(--accent1);
+    }
+
+    /* Aligned with the outline's rows, which hang off a 20px track. Scoped
+       to the rail so it outranks the narrower-width rule further down. */
+    .md-sidebar--secondary .futa-last-modified {
+        margin-top: var(--spacing-xlarge);
+        padding-inline: calc(20px + var(--spacing-standard))
+            var(--spacing-standard);
+    }
+
+    /* Bookmarks (javascripts/bookmarks.js): the outline's track and rows. */
+    .md-sidebar--secondary .futa-bookmarks {
+        margin-top: var(--spacing-xlarge);
+    }
+
+    .md-sidebar--secondary .futa-bookmarks .md-nav__list {
+        margin-left: 20px;
+        padding-left: 0;
+        border-left: 1px solid var(--accent2);
+    }
+
+    .md-sidebar--secondary .futa-bookmarks .md-nav__link {
+        margin: 1px 0 0 -1px;
+        padding: var(--spacing-tiny) var(--spacing-standard);
+        border-left: 2px solid transparent;
+        color: var(--fg2);
+        font-size: var(--font-size-tiny);
+    }
+
+    .md-sidebar--secondary .futa-bookmarks .md-nav__link:hover {
+        background-color: var(--bg3);
+        color: var(--fg1);
+    }
+
+    .md-sidebar--secondary .futa-bookmarks .md-nav__link--active {
+        border-left-color: var(--accent1);
+        color: var(--accent1);
+    }
+
+    .md-sidebar--secondary .futa-bookmarks__empty {
+        padding-inline: calc(20px + var(--spacing-standard))
+            var(--spacing-standard);
+    }
 }
 
-.md-nav__item a.md-nav__link--active::before {
-    content: '>';
-    position: absolute;
-    left: -0.72rem;
-    color: var(--md-typeset-a-color);
+/* The page's `last_modified:` date (hooks/last_modified.py), under the table
+   of contents. Below 76.25em the rail keeps Material's stock outline, whose
+   rows are inset 0.6rem. */
+.futa-last-modified {
+    margin: var(--spacing-large) 0;
+    padding-inline: 0.6rem;
+    color: var(--fg3);
+    font-size: var(--font-size-tiny);
 }
 
-/* The table of contents reads as a terminal listing rather than a paragraph. */
-.md-nav--secondary .md-nav__link {
-    letter-spacing: 0.02em;
+.futa-last-modified time {
+    color: var(--fg2);
+}
+
+/* The bookmarks list (javascripts/bookmarks.js), between the table of
+   contents and the last-modified date. Each row is the page link and a
+   remove button; the button is always shown, since touch screens have no
+   hover to reveal it. */
+.futa-bookmarks {
+    margin-top: var(--spacing-large);
+}
+
+.futa-bookmarks:focus {
+    outline: none;
+}
+
+/* Material's inset for the outline (`.md-nav--secondary .md-nav__list`). */
+.futa-bookmarks .md-nav__list {
+    padding-left: 0.6rem;
+}
+
+.futa-bookmarks__item {
+    display: flex;
+    align-items: center;
+}
+
+.futa-bookmarks__item > .md-nav__link {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.futa-bookmarks__remove {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--fg3);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.futa-bookmarks__remove svg {
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.futa-bookmarks__remove:is(:hover, :focus-visible) {
+    color: var(--accent1);
+}
+
+.futa-bookmarks__empty {
+    margin: 0;
+    padding-inline: 0.6rem;
+    color: var(--fg3);
+    font-size: var(--font-size-tiny);
 }
 
 /* --- Typography -----------------------------------------------------------
-   Fira Mono runs wider than a proportional face, so the base size comes down a
-   notch and the leading opens up to keep long prose comfortable. */
+   The app's scale: 12px prose in the muted text colour with loose leading,
+   headings in the bright text colour. */
 
 .md-typeset {
-    font-size: 0.74rem;
-    line-height: 1.75;
+    font-size: var(--font-size-small);
+    line-height: var(--font-line-height-loose);
+    color: var(--fg2);
 }
 
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+    color: var(--fg1);
+    font-family: var(--font-primary);
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+/* The blog's post header: title over a hairline rule. */
 .md-typeset h1 {
-    color: var(--md-default-fg-color);
-    font-weight: 500;
-    font-size: 1.6rem;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin-bottom: 1.2rem;
+    font-size: var(--font-size-large);
+    font-weight: 700;
+    line-height: var(--font-line-height-normal);
+    margin: 0 0 var(--spacing-large);
+    padding-bottom: var(--spacing-large);
+    border-bottom: 1px solid var(--accent2);
 }
 
-/* The app's terminal cursor, parked after the page title. It does not blink:
-   a page title is read once, and a caret pulsing through the whole visit is
-   motion the reader cannot dismiss. Scoped to the page body because search
-   results reuse `h1` for their titles. */
-.md-content .md-typeset h1::after {
-    content: '';
-    display: inline-block;
-    width: 0.55em;
-    margin-left: 0.18em;
-    border-bottom: 0.12em solid var(--md-typeset-a-color);
-}
-
-/* Section headers as press-sheet labels: small, tracked, uppercase, ruled. */
 .md-typeset h2 {
-    color: var(--futa-label-fg);
-    font-weight: 500;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    border-bottom: 1px dashed var(--futa-rule);
-    padding-bottom: 0.35rem;
-    margin: 2.4rem 0 1rem;
-    line-height: 1.5;
+    font-size: var(--font-size-medium);
+    font-weight: 700;
+    line-height: var(--font-line-height-normal);
+    margin: var(--spacing-xlarge) 0 var(--spacing-standard);
 }
 
 .md-typeset h3 {
-    color: var(--md-default-fg-color);
-    font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    margin-top: 1.8rem;
+    font-size: var(--font-size-small);
+    font-weight: 700;
+    margin: var(--spacing-large) 0 var(--spacing-small);
 }
 
 .md-typeset h4,
 .md-typeset h5,
 .md-typeset h6 {
-    color: var(--md-default-fg-color);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: none;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+    margin: var(--spacing-large) 0 var(--spacing-small);
 }
 
 .md-typeset a {
     /* Body links are underlined outright. In a single-typeface, single-hue
        palette, colour alone is a weak signal — and it is no signal at all for
        a reader who cannot separate the two hues. */
+    color: var(--accent1);
     text-decoration: underline;
-    text-decoration-color: rgb(from var(--md-typeset-a-color) r g b / 0.45);
     text-underline-offset: 0.2em;
 }
 
 .md-typeset a:hover {
-    text-decoration-color: currentcolor;
+    color: var(--fg1);
 }
 
-/* Structural links — heading anchors, the edit-this-page action, footer
-   navigation — are not prose, so they keep the plain treatment. */
+/* Structural links — heading anchors, buttons — are not prose, so they keep
+   the plain treatment. */
 .md-typeset a.headerlink,
-.md-typeset a.md-content__button,
 .md-typeset .md-button {
     text-decoration: none;
+}
+
+/* Buttons: the app's Button surfaces. Primary is an accent fill with dark
+   text, secondary a raised fill with muted text; uppercase labels, no frame. */
+.md-typeset .md-button {
+    padding: var(--spacing-standard) var(--spacing-large);
+    border: 0;
+    background-color: var(--bg3);
+    color: var(--fg2);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-standard);
+    letter-spacing: var(--font-letter-spacing-wide);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.md-typeset .md-button--primary {
+    background-color: var(--accent1);
+    color: var(--bg1);
+}
+
+.md-typeset .md-button:is(:hover, :focus) {
+    border: 0;
+    background-color: var(--accent2);
+    color: var(--bg1);
+}
+
+/* Heading permanent links (the icon is hooks/permalink_icon.py). Material
+   hides the link until its heading is hovered or focused, which leaves touch
+   screens with no way to find it; here it is always shown, dim, and lights up
+   on its own hover, focus, or when its heading is the target.
+
+   The hit area is --futa-permalink-hit square around the icon, never smaller
+   than 28px. The negative block margins hand the extra height back so the
+   heading's line box is unchanged, and the inline-start margin is reduced by
+   the padding so the icon sits where the pilcrow did. Prefixed with [dir] to
+   out-specify Material's own margin rule. */
+[dir] .md-typeset .headerlink {
+    --futa-permalink-hit: max(1.6em, 1.75rem);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--futa-permalink-hit);
+    block-size: var(--futa-permalink-hit);
+    margin-block: calc((1em - var(--futa-permalink-hit)) / 2);
+    margin-inline: calc(0.5rem - (var(--futa-permalink-hit) - 0.8em) / 2) 0;
+    vertical-align: middle;
+    color: var(--fg3);
+    opacity: 1;
+    transition: color var(--transition-fast);
+}
+
+.md-typeset .futa-permalink-icon {
+    inline-size: 0.8em;
+    block-size: 0.8em;
+}
+
+.md-typeset .headerlink:is(:hover, :focus-visible),
+.md-typeset [id]:target .headerlink {
+    color: var(--accent1);
+}
+
+/* The page's bookmark toggle (javascripts/bookmarks.js), after the title's
+   permanent link, with the same hit area and line-box trick. Outlined and
+   dim when off, filled in the accent when on. Hover lights an outline in the
+   accent and dims a filled one to --fg2 (--fg1 is the accent's own value, so
+   brightening would not show). */
+.md-typeset .futa-bookmark {
+    --futa-permalink-hit: max(1.6em, 1.75rem);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--futa-permalink-hit);
+    block-size: var(--futa-permalink-hit);
+    margin-block: calc((1em - var(--futa-permalink-hit)) / 2);
+    margin-inline: calc(0.25rem - (var(--futa-permalink-hit) - 0.8em) / 2) 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--fg3);
+    font: inherit;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.md-typeset .futa-bookmark svg {
+    inline-size: 0.6em;
+    block-size: 0.8em;
+}
+
+.md-typeset .futa-bookmark:is(:hover, :focus-visible),
+.md-typeset .futa-bookmark[aria-pressed='true'] {
+    color: var(--accent1);
+}
+
+.md-typeset .futa-bookmark[aria-pressed='true']:is(:hover, :focus-visible) {
+    color: var(--fg2);
 }
 
 /* --- Ask AI ---------------------------------------------------------------
@@ -405,14 +920,26 @@ summary:focus-visible {
     display: flex;
     float: right;
     width: max-content;
-    margin: 0 0 0.8rem 1rem;
-    font-size: 0.66rem;
+    margin: 0 0 var(--spacing-small) var(--spacing-large);
+    font-size: var(--font-size-tiny);
+}
+
+/* Where the menu floats, the page title shares its line: a long title's
+   first line wraps short of the menu, and the title's rule still runs the
+   full width underneath. The title is pulled up by the space between its
+   line box and the tops of its capitals (half the leading plus Fira Mono's
+   ascent above cap height, 0.39em), so the capitals line up with the menu's
+   top edge rather than the invisible top of the line. */
+@media screen and (min-width: 45em) {
+    .md-content .md-typeset h1 {
+        margin-top: -0.39em;
+    }
 }
 
 .md-typeset .futa-ai-menu__dropdown {
     position: static;
-    flex: 0 0 2.15rem;
-    width: 2.15rem;
+    flex: 0 0 1.5rem;
+    width: 1.5rem;
     margin: 0;
     padding: 0;
     border: 0;
@@ -430,16 +957,16 @@ summary:focus-visible {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.45rem;
-    height: 2.15rem;
+    gap: var(--spacing-small);
+    height: 1.5rem;
     margin: 0;
-    padding: 0.4rem 0.7rem;
-    border: 1px solid var(--futa-rule);
-    background: var(--md-default-bg-color);
-    color: var(--md-default-fg-color);
+    padding: var(--spacing-small) var(--spacing-standard);
+    border: 1px solid var(--accent2);
+    background: transparent;
+    color: var(--fg2);
     cursor: pointer;
-    font-size: 0.68rem;
-    font-weight: 500;
+    font-size: var(--font-size-tiny);
+    font-weight: var(--font-weight-standard);
     letter-spacing: 0;
     line-height: 1;
     list-style: none;
@@ -456,7 +983,7 @@ summary:focus-visible {
     width: 100%;
     min-width: 0;
     padding: 0;
-    border-left: 1px solid var(--futa-rule);
+    border-left: 1px solid var(--accent2);
     border-radius: 0 var(--futa-ai-radius) var(--futa-ai-radius) 0;
 }
 
@@ -478,8 +1005,8 @@ summary:focus-visible {
 .md-typeset .futa-ai-menu__primary:focus-visible,
 .md-typeset .futa-ai-menu__dropdown > summary:hover,
 .md-typeset .futa-ai-menu__dropdown[open] > summary {
-    border-color: var(--md-typeset-a-color);
-    color: var(--md-typeset-a-color);
+    border-color: var(--accent1);
+    color: var(--accent1);
 }
 
 /* The divider is the disclosure segment's left border. Light it with the
@@ -488,27 +1015,27 @@ summary:focus-visible {
     .futa-ai-menu__primary:is(:hover, :focus-visible)
     + .futa-ai-menu__dropdown
     > summary {
-    border-left-color: var(--md-typeset-a-color);
+    border-left-color: var(--accent1);
 }
 
 .futa-ai-menu svg {
     display: block;
-    width: 1rem;
-    height: 1rem;
+    width: 0.75rem;
+    height: 0.75rem;
 }
 
 .futa-ai-menu__chevron {
     display: grid;
-    flex: 0 0 0.8rem;
+    flex: 0 0 0.625rem;
     place-items: center;
-    width: 0.8rem;
-    height: 0.8rem;
-    transition: transform 120ms linear;
+    width: 0.625rem;
+    height: 0.625rem;
+    transition: transform var(--transition-fast) linear;
 }
 
 .md-typeset .futa-ai-menu__chevron svg {
-    width: 0.8rem;
-    height: 0.8rem;
+    width: 0.625rem;
+    height: 0.625rem;
 }
 
 .futa-ai-menu__dropdown[open] .futa-ai-menu__chevron {
@@ -517,28 +1044,28 @@ summary:focus-visible {
 
 .futa-ai-menu__panel {
     position: absolute;
-    top: calc(100% + 0.3rem);
+    top: calc(100% + var(--spacing-small));
     right: 0;
-    width: 18rem;
-    border: 1px solid var(--futa-rule);
+    width: 16rem;
+    border: 1px solid var(--accent2);
     border-radius: var(--futa-ai-radius);
-    background: var(--md-default-bg-color);
-    box-shadow: 0 0.4rem 1rem rgb(0 0 0 / 0.25);
+    background: var(--bg2);
+    box-shadow: none;
     overflow: hidden;
 }
 
 .md-typeset .futa-ai-menu__item {
     display: grid;
-    grid-template-columns: 1.8rem 1fr 0.8rem;
-    gap: 0.65rem;
+    grid-template-columns: 1.5rem 1fr 0.75rem;
+    gap: var(--spacing-standard);
     align-items: center;
     width: 100%;
-    min-height: 3.25rem;
-    padding: 0.55rem 0.7rem;
+    min-height: 2.75rem;
+    padding: var(--spacing-standard);
     border: 0;
-    border-bottom: 1px solid rgb(from var(--futa-accent2) r g b / 0.22);
+    border-bottom: 1px solid var(--bg3);
     background: transparent;
-    color: var(--md-default-fg-color);
+    color: var(--fg1);
     cursor: pointer;
     font: inherit;
     text-align: left;
@@ -549,9 +1076,9 @@ summary:focus-visible {
     box-sizing: border-box;
     display: grid;
     place-items: center;
-    width: 1.8rem;
-    height: 1.8rem;
-    border: 1px solid var(--futa-rule);
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--accent2);
     border-radius: 0;
 }
 
@@ -561,8 +1088,8 @@ summary:focus-visible {
 
 .md-typeset .futa-ai-menu__item:hover,
 .md-typeset .futa-ai-menu__item:focus-visible {
-    background: var(--futa-panel);
-    color: var(--md-typeset-a-color);
+    background: var(--bg3);
+    color: var(--accent1);
 }
 
 .futa-ai-menu__item strong,
@@ -571,26 +1098,26 @@ summary:focus-visible {
 }
 
 .futa-ai-menu__item strong {
-    font-size: 0.68rem;
-    font-weight: 500;
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-standard);
 }
 
 .futa-ai-menu__item small {
-    margin-top: 0.12rem;
-    color: var(--md-default-fg-color--light);
-    font-size: 0.57rem;
+    margin-top: var(--spacing-tiny);
+    color: var(--fg2);
+    font-size: var(--font-size-tiny);
     line-height: 1.4;
 }
 
 .futa-ai-menu__external {
-    color: var(--md-default-fg-color--lighter);
+    color: var(--fg3);
 }
 
 @media screen and (max-width: 44.984375em) {
     .md-typeset .futa-ai-menu {
         display: inline-flex;
         float: none;
-        margin: 0 0 1rem;
+        margin: 0 0 var(--spacing-large);
     }
 
     .futa-ai-menu__panel {
@@ -600,33 +1127,41 @@ summary:focus-visible {
     }
 }
 
-/* Bulleted lists take the app's `>` row marker. */
+/* --- Lists, rules, quotes ------------------------------------------------- */
+
 .md-typeset ul li::marker {
-    color: var(--futa-accent2);
+    color: var(--accent2);
 }
 
 .md-typeset ol li::marker {
-    color: var(--futa-fg3);
+    color: var(--fg3);
 }
 
 .md-typeset hr {
-    border-bottom: 1px dashed var(--futa-rule);
+    border-bottom: 1px solid var(--accent2);
 }
 
 .md-typeset blockquote {
-    border-left: 2px solid var(--futa-accent2);
-    color: var(--md-default-fg-color--light);
+    border-left: 3px solid var(--accent2);
+    padding-left: var(--spacing-standard);
+    color: var(--fg3);
 }
 
-/* --- Code ----------------------------------------------------------------- */
+/* --- Code -----------------------------------------------------------------
+   The blog's treatment: a raised fill, no frame. */
 
 .md-typeset code {
-    border: 1px solid rgb(from var(--futa-accent2) r g b / 0.35);
-    padding: 0 0.25em;
+    border: 0;
+    padding: 0 var(--spacing-small);
+    font-size: inherit;
+}
+
+.md-typeset pre {
+    font-size: var(--font-size-small);
 }
 
 .md-typeset pre > code {
-    border: 1px solid var(--futa-rule);
+    padding: var(--spacing-standard);
 }
 
 .md-typeset a > code {
@@ -634,12 +1169,12 @@ summary:focus-visible {
 }
 
 /* --- Tables ---------------------------------------------------------------
-   Modelled on the in-app data grid: uppercase header row, hairline separators,
-   a lit hover state, no fill and no rounding. */
+   The blog's grid: hairline cell borders, a raised header row, and a lit
+   hover state; no rounding. */
 
 .md-typeset table:not([class]) {
-    border: 1px solid var(--futa-rule);
-    font-size: 0.68rem;
+    border: 1px solid var(--accent2);
+    font-size: var(--font-size-small);
 }
 
 .md-typeset h2.futa-path-page + div table {
@@ -647,59 +1182,168 @@ summary:focus-visible {
     width: 100%;
 }
 
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+    border: 1px solid var(--accent2);
+    padding: var(--spacing-small) var(--spacing-standard);
+}
+
 .md-typeset table:not([class]) th {
-    background-color: var(--futa-panel);
-    color: var(--md-default-fg-color--light);
-    font-weight: 500;
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    background-color: var(--bg3);
+    color: var(--fg1);
+    font-weight: var(--font-weight-bold);
 }
 
 .md-typeset table:not([class]) td {
-    border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.22);
     vertical-align: top;
 }
 
 .md-typeset table:not([class]) tbody tr {
-    transition: background-color 100ms linear;
+    transition: background-color var(--transition-fast) linear;
 }
 
 .md-typeset table:not([class]) tbody tr:hover {
-    background-color: var(--futa-panel);
+    background-color: var(--bg3);
     box-shadow: none;
 }
 
+/* --- Topic cards ---------------------------------------------------------
+   A group page's topic list, rendered as cards by hooks/topic_cards.py. The
+   app's angled card in its settled state: clipped corners, a 2px frame in the
+   muted accent, and the page surface inside it. The frame and surface are
+   pseudo-elements so the clip never cuts into the link's own box. */
+
+.md-typeset ul.futa-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: var(--spacing-large);
+    margin: var(--spacing-large) 0;
+    padding: 0;
+    list-style: none;
+}
+
+.md-typeset ul.futa-cards > li {
+    display: flex;
+    margin: 0;
+}
+
+.md-typeset ul.futa-cards > li::marker {
+    content: none;
+}
+
+.md-typeset a.futa-card {
+    --futa-card-accent: var(--accent2);
+    --futa-card-border: 2px;
+    --futa-card-cut: 12px;
+    /* A diagonal edge inset by the border moves border * (2 - sqrt(2)) along
+       each axis, as in the app's angled card. */
+    --futa-card-inner-cut: calc(
+        var(--futa-card-cut) - var(--futa-card-border) * 0.58578644
+    );
+
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    padding: var(--spacing-large);
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.md-typeset a.futa-card::before,
+.md-typeset a.futa-card::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.md-typeset a.futa-card::before {
+    inset: 0;
+    background-color: var(--futa-card-accent);
+    clip-path: polygon(
+        var(--futa-card-cut) 0,
+        calc(100% - var(--futa-card-cut)) 0,
+        100% var(--futa-card-cut),
+        100% calc(100% - var(--futa-card-cut)),
+        calc(100% - var(--futa-card-cut)) 100%,
+        var(--futa-card-cut) 100%,
+        0 calc(100% - var(--futa-card-cut)),
+        0 var(--futa-card-cut)
+    );
+    transition: background-color var(--transition-fast);
+}
+
+.md-typeset a.futa-card::after {
+    inset: var(--futa-card-border);
+    background-color: var(--bg1);
+    clip-path: polygon(
+        var(--futa-card-inner-cut) 0,
+        calc(100% - var(--futa-card-inner-cut)) 0,
+        100% var(--futa-card-inner-cut),
+        100% calc(100% - var(--futa-card-inner-cut)),
+        calc(100% - var(--futa-card-inner-cut)) 100%,
+        var(--futa-card-inner-cut) 100%,
+        0 calc(100% - var(--futa-card-inner-cut)),
+        0 var(--futa-card-inner-cut)
+    );
+}
+
+.md-typeset .futa-card__title {
+    color: var(--fg1);
+    font-weight: 700;
+    line-height: var(--font-line-height-normal);
+}
+
+.md-typeset .futa-card__description {
+    color: var(--fg2);
+    line-height: var(--font-line-height-normal);
+}
+
+/* Hover and keyboard focus light the frame. The lit
+   frame is the focus indicator: a rectangular outline would sit outside the
+   clipped corners. */
+.md-typeset a.futa-card:is(:hover, :focus-visible) {
+    --futa-card-accent: var(--accent1);
+    color: inherit;
+    outline: none;
+}
+
 /* --- Admonitions ----------------------------------------------------------
-   A flat panel with a single accent edge and a tracked label, in place of
-   Material's tinted card. Material colours each type with `.md-typeset
+   The app's status panels: a 10% tint of the status colour, a 30% frame, and
+   a lit left edge and title. Material colours each type with `.md-typeset
    .admonition.note`-style selectors, so the per-type rules below have to match
-   that specificity (and come later) to take effect; they set one custom
-   property, which the shared rules then read. */
+   that specificity (and come later) to take effect; they set the three custom
+   properties, which the shared rules then read. */
 
 .md-typeset .admonition,
 .md-typeset details {
-    --futa-admonition: var(--futa-accent1);
-    border: 1px solid var(--futa-rule);
+    --futa-admonition: var(--accent1);
+    --futa-admonition-bg: rgb(from var(--accent1) r g b / 0.1);
+    --futa-admonition-border: rgb(from var(--accent1) r g b / 0.3);
+    border: 1px solid var(--futa-admonition-border);
     border-left-width: 2px;
-    background-color: var(--futa-panel);
+    background-color: var(--futa-admonition-bg);
     box-shadow: none;
-    font-size: 0.72rem;
+    font-size: var(--font-size-small);
 }
 
 .md-typeset .admonition:focus-within,
 .md-typeset details:focus-within {
-    box-shadow: 0 0 0 2px rgb(from var(--futa-admonition) r g b / 0.25);
+    box-shadow: 0 0 0 2px var(--futa-admonition-border);
 }
 
 .md-typeset .admonition > .admonition-title,
 .md-typeset details > summary {
     background-color: transparent;
-    border-bottom: 1px dashed var(--futa-rule);
+    border-bottom: 1px solid var(--futa-admonition-border);
     color: var(--futa-admonition);
-    font-weight: 500;
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
+    font-weight: var(--font-weight-standard);
+    font-size: var(--font-size-small);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
 }
 
@@ -708,8 +1352,8 @@ summary:focus-visible {
     background-color: var(--futa-admonition);
 }
 
-/* The colour families: cyan for neutral, green for affirmative, orange for
-   caution, red for failure — the app's status palette. */
+/* The colour families: the accent for neutral, then the app's positive,
+   warning and danger status colours. */
 
 .md-typeset .admonition.note,
 .md-typeset details.note,
@@ -735,7 +1379,9 @@ summary:focus-visible {
 .md-typeset details.quote,
 .md-typeset .admonition.cite,
 .md-typeset details.cite {
-    --futa-admonition: var(--futa-accent1);
+    --futa-admonition: var(--accent1);
+    --futa-admonition-bg: rgb(from var(--accent1) r g b / 0.1);
+    --futa-admonition-border: rgb(from var(--accent1) r g b / 0.3);
 }
 
 .md-typeset .admonition.tip,
@@ -750,7 +1396,9 @@ summary:focus-visible {
 .md-typeset details.check,
 .md-typeset .admonition.done,
 .md-typeset details.done {
-    --futa-admonition: var(--futa-green);
+    --futa-admonition: var(--status-positive-fg);
+    --futa-admonition-bg: var(--status-positive-bg);
+    --futa-admonition-border: var(--status-positive-border);
 }
 
 .md-typeset .admonition.warning,
@@ -759,7 +1407,9 @@ summary:focus-visible {
 .md-typeset details.caution,
 .md-typeset .admonition.attention,
 .md-typeset details.attention {
-    --futa-admonition: var(--futa-orange);
+    --futa-admonition: var(--status-warning-fg);
+    --futa-admonition-bg: var(--status-warning-bg);
+    --futa-admonition-border: var(--status-warning-border);
 }
 
 .md-typeset .admonition.danger,
@@ -774,56 +1424,61 @@ summary:focus-visible {
 .md-typeset details.missing,
 .md-typeset .admonition.bug,
 .md-typeset details.bug {
-    --futa-admonition: var(--futa-red);
+    --futa-admonition: var(--status-danger-fg);
+    --futa-admonition-bg: var(--status-danger-bg);
+    --futa-admonition-border: var(--status-danger-border);
 }
 
-/* Every type keeps the same frame: hairline box, lit left edge. Listed with
+/* Every type keeps the same frame: tinted box, lit left edge. Listed with
    the type class so Material's own per-type `border-color` doesn't win. */
 .md-typeset .admonition[class],
 .md-typeset details[class] {
-    border-color: var(--futa-rule);
+    border-color: var(--futa-admonition-border);
     border-left-color: var(--futa-admonition);
 }
 
 /* --- Tabs ----------------------------------------------------------------- */
 
 .md-typeset .tabbed-labels > label {
-    font-weight: 500;
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
+    font-weight: var(--font-weight-standard);
+    font-size: var(--font-size-small);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
 }
 
 /* --- Footer / pagination --------------------------------------------------
-   PREVIOUS / NEXT read as operator labels; the destination stays plain. */
+   PREVIOUS / NEXT read as panel labels; the destination stays plain. */
 
 .md-footer__direction {
-    letter-spacing: 0.2em;
+    color: var(--fg3);
+    font-size: var(--font-size-tiny);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
-    font-size: 0.55rem;
-    opacity: 0.9;
+    opacity: 1;
 }
 
 .md-footer__title {
-    font-size: 0.78rem;
+    font-size: var(--font-size-small);
 }
 
 .md-footer__link {
     align-items: center;
 }
 
-.md-footer__inner {
-    border-top: 1px solid var(--futa-rule);
+.md-footer {
+    border-top: 1px solid var(--accent2);
 }
 
 .md-footer-meta {
-    border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.25);
+    background-color: var(--bg1);
+    border-top: 1px solid var(--bg3);
 }
 
 .md-copyright {
-    letter-spacing: 0.1em;
+    color: var(--fg3);
+    font-size: var(--font-size-tiny);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
-    font-size: 0.55rem;
 }
 
 @media screen and (min-width: 76.25em) {
@@ -845,6 +1500,12 @@ summary:focus-visible {
 
     .md-main {
         overflow-y: auto;
+        scrollbar-gutter: stable;
+        /* Lets the rails size themselves to this viewport in cqh. Nothing
+           inside is position: fixed that the containment would re-anchor
+           (Material's back-to-top button follows window scroll, which never
+           moves here). */
+        container-type: size;
     }
 
     .md-footer__inner {
@@ -852,7 +1513,7 @@ summary:focus-visible {
     }
 
     .md-footer__link {
-        margin-block: 0.2rem;
+        margin-block: var(--spacing-small);
     }
 
     .md-footer__title {
@@ -863,34 +1524,38 @@ summary:focus-visible {
 /* --- Search results ------------------------------------------------------- */
 
 .md-search-result__meta {
-    letter-spacing: 0.14em;
+    font-size: var(--font-size-tiny);
+    letter-spacing: var(--font-letter-spacing-wide);
     text-transform: uppercase;
-    font-size: 0.6rem;
+}
+
+.md-search-result .md-typeset {
+    font-size: var(--font-size-small);
 }
 
 /* --- Scrollbars -----------------------------------------------------------
    Firefox honours the pair below; WebKit/Blink needs the ::-webkit rules. */
 
-[data-md-color-scheme='slate'] * {
-    scrollbar-color: var(--futa-accent2) transparent;
+* {
+    scrollbar-color: var(--accent2) transparent;
     scrollbar-width: thin;
 }
 
-[data-md-color-scheme='slate'] ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
-[data-md-color-scheme='slate'] ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background: transparent;
 }
 
-[data-md-color-scheme='slate'] ::-webkit-scrollbar-thumb {
-    background: rgb(from var(--futa-accent2) r g b / 0.6);
+::-webkit-scrollbar-thumb {
+    background: var(--accent2);
 }
 
-[data-md-color-scheme='slate'] ::-webkit-scrollbar-thumb:hover {
-    background: var(--futa-accent1);
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent1);
 }
 
 @media screen and (max-width: 44.984375em) {
@@ -918,7 +1583,7 @@ summary:focus-visible {
     }
 
     .md-typeset h2.futa-path-page + div table tbody tr {
-        border-top: 1px solid rgb(from var(--futa-accent2) r g b / 0.3);
+        border-top: 1px solid var(--accent2);
     }
 
     .md-typeset h2.futa-path-page + div table tbody tr:first-child {
@@ -926,30 +1591,36 @@ summary:focus-visible {
     }
 
     .md-typeset h2.futa-path-page + div table td {
-        border-top: 0;
-        padding: 0.25rem 0.8rem 0.7rem;
+        border: 0;
+        padding: var(--spacing-small) var(--spacing-large) var(--spacing-large);
     }
 
     .md-typeset h2.futa-path-page + div table td:first-child {
-        color: var(--md-default-fg-color--light);
-        font-size: 0.65rem;
-        letter-spacing: 0.08em;
+        color: var(--fg2);
+        font-size: var(--font-size-tiny);
+        letter-spacing: var(--font-letter-spacing-wide);
         text-transform: uppercase;
-        padding-top: 0.7rem;
-        padding-bottom: 0.15rem;
+        padding-top: var(--spacing-large);
+        padding-bottom: var(--spacing-tiny);
     }
 
     .md-typeset h2.futa-path-page + div table td:last-child {
-        font-size: 0.75rem;
+        font-size: var(--font-size-small);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .md-nav__link,
+    .md-typeset a.futa-card::before,
+    .md-nav--primary .futa-nav-collapse,
     .md-search__form,
     .md-typeset a,
     .md-typeset table tbody tr,
-    .md-top {
+    .md-top,
+    .md-sidebar--primary .md-sidebar__scrollwrap,
+    [dir] .md-typeset .headerlink,
+    .md-typeset .futa-bookmark,
+    .futa-bookmarks__remove {
         transition: none;
         animation: none;
     }

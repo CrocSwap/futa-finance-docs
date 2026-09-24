@@ -1,6 +1,6 @@
-# Explore an auction and market
+# Start here
 
-Follow one ticker from its live auction to its post-auction market. This tour is read-only: you do not need to connect a wallet or submit a transaction.
+Follow one ticker from its live auction to its post-auction market. This tour is read-only: you do not need to connect a wallet or submit a transaction, and it teaches the complete lifecycle before you commit anything.
 
 ## 1. Open a live auction
 
@@ -54,4 +54,4 @@ A FUTA ticker moves through one continuous lifecycle:
 3. finalization settles bids and creates the Treasury AMM;
 4. the Treasury AMM provides the continuing market.
 
-Next, [learn how single-price auctions work](../concepts/single-price-auctions.md). When you are ready to participate, [connect a wallet](../guides/connect-a-wallet.md), then [place a bid](../guides/place-a-bid.md).
+Next, [learn how single-price auctions work](concepts/single-price-auctions.md). When you are ready to participate, [connect a wallet](guides/connect-a-wallet.md), then [place a bid](guides/place-a-bid.md).
