@@ -56,10 +56,19 @@ Select your wallet address in the header to see which login the wallet is signed
 | Keys                        | Held by your wallet software                           | Held by Privy and tied to your login                                             |
 | Approving a transaction     | Your wallet prompts you for each signature             | No wallet prompt. FUTA shows its own confirmation before claims and finalization |
 | Session                     | Ends when you close the tab; reconnect in each new tab | Persists in the browser; a new tab reconnects automatically until you sign out   |
-| Recovery                    | Your wallet's recovery material                        | Access to the email, Google, or Apple account you signed in with                 |
-| In-app key backup or export | Not applicable                                         | Not available. FUTA has no key export, passkey, or recovery-management screen    |
+| Recovery                    | Your wallet's recovery material                        | Access to any sign-in method linked to the wallet                                |
+| In-app key backup or export | Not applicable                                         | Link more sign-in methods or export the key in **ACCOUNT → SETTINGS**            |
 
 Because an embedded wallet does not prompt per signature, review the amount, ticker mint, bid limit, and minimum swap output on FUTA's own screens before confirming. [See risks and limitations](../reference/risks-and-limitations.md).
+
+## Keep access to an embedded wallet
+
+An embedded wallet is only as reachable as the logins linked to it. If you signed in with a single email or social account and lose access to it, the wallet goes with it. While a wallet has only one login, the wallet menu in the header shows an **ADD BACKUP** link beside the login, which opens **ACCOUNT → SETTINGS**. You can also open it directly while signed in:
+
+- **Sign-in methods** lists every login that opens the wallet. Select **ADD GOOGLE**, **ADD APPLE**, or **ADD EMAIL** to link another. Google and Apple redirect to the provider and back; email sends a six-digit code to the new address. Each wallet can have one email, one Google account, and one Apple account, and an account already used to sign in to a different embedded wallet cannot be linked. **REMOVE** unlinks a method, and is unavailable while it is the only one.
+- **Export private key** opens a window from Privy that shows the wallet's private key, so you can import the wallet into Phantom or another Solana wallet and use it without FUTA or Privy. FUTA never sees the key and never asks for it. Anyone who has the key controls the wallet: store it offline and never paste it into a website or message.
+
+The header's wallet menu names the login most recently verified, so after linking a new method it may show that one rather than the one you signed in with.
 
 ## Disconnect
 

@@ -88,8 +88,8 @@ An embedded wallet created by signing in with email, Google, or Apple is held by
 | Limitation                       | Effect                                                                                                                                                                                         |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | No per-transaction wallet prompt | The wallet signs without opening an approval screen of its own. FUTA's own confirmation before a claim or finalization, and the amounts shown on the bid and trade forms, are the review step. |
-| Access follows the login         | Whoever controls the email, Google, or Apple account can reach the wallet. Losing that account means losing the wallet.                                                                        |
-| No export or recovery screen     | FUTA does not offer key export, passkey or multi-factor setup, account linking, or recovery management for the embedded wallet.                                                                |
+| Access follows the login         | Whoever controls any sign-in method linked to the wallet can reach it. Losing every linked sign-in method means losing the wallet unless you exported its key first.                           |
+| Limited account controls         | **ACCOUNT → SETTINGS** can link additional email, Google, or Apple sign-in methods and export the private key. FUTA does not offer passkey or multi-factor setup for the embedded wallet.      |
 | Session persists in the browser  | The login survives closing the tab, and a new tab reconnects the wallet automatically until you disconnect. Disconnect before leaving a shared or public device.                               |
 | Provider dependency              | Sign-in, signing, and card funding depend on the wallet provider's service in addition to Solana and RPC services.                                                                             |
 
