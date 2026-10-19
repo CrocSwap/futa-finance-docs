@@ -10,18 +10,18 @@ Three programs form the core state and custody path:
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | Auction program      | Protocol configuration, ticker registration, mint creation, bids, live clearing, finalization, bidder claims, and auction creator fees |
 | Treasury AMM program | Immutable market configuration, pool accounting, swaps, market fee accrual, and market fee claims                                      |
-| SPL Token program    | Supply and quote mints, token accounts, vault balances, and token transfers                                                            |
+| Token programs       | Token-2022 owns supply mints and their token accounts; SPL Token owns quote mints and theirs                                           |
 
 The auction program invokes the Treasury AMM during finalization. Clients interact with each program directly after that boundary: auction claims remain auction-program operations, while swaps and market-fee claims are Treasury AMM operations.
 
-The auction program also invokes the Metaplex Token Metadata program when it creates launch metadata and the creator fee-right NFT. The System Program creates accounts and is the derivation program for the deliberately unsignable permanent-reserve authority. Those auxiliary programs do not own FUTA's auction or market accounting.
+A supply mint carries its own metadata (ticker as name and symbol, plus URI) in Token-2022's metadata extension, written at launch with no update authority, so it never changes. Supply mints have no other Token-2022 extensions. The auction program invokes the Metaplex Token Metadata program only for the optional creator fee-right NFT. The System Program creates accounts and is the derivation program for the deliberately unsignable permanent-reserve authority. Those auxiliary programs do not own FUTA's auction or market accounting.
 
 ```mermaid
 flowchart LR
     client["Client or indexer"]
     auction["Auction program"]
     market["Treasury AMM program"]
-    token["SPL Token program"]
+    token["Token programs"]
     auctionState["Ticker, auction, bid, and settlement state"]
     poolState["Market pool state"]
     vaults["Auction and market vaults"]
@@ -75,7 +75,7 @@ The Treasury AMM pool is the live source for post-auction trading state. The auc
 
 ## Asset custody
 
-The SPL Token program owns every token-account data record. Program-derived authorities control transfers.
+The token programs own every token-account data record: Token-2022 for the supply token, SPL Token for the quote token. Program-derived authorities control transfers.
 
 | Authority                         | Controls                                                                                        |
 | --------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -113,7 +113,7 @@ One auction instruction:
 - validates and registers the ticker;
 - creates the supply mint and auction vaults;
 - mints the full fixed supply;
-- creates the launch mint's Metaplex metadata when that CPI is enabled in the deployed build;
+- writes the supply mint's on-mint metadata and makes it immutable;
 - opens `AuctionState`;
 - escrows the creator's opening bid;
 - creates the creator `BidState` and aggregate level ledger.

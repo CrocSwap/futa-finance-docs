@@ -26,7 +26,6 @@ The second column identifies which program ID to use for each derivation. Text s
 | Permanent reserve authority | System Program     | `"futa_permanent_reserve"`, `token_mint`                     |
 | Creator fee-right mint      | Auction            | `"creator_fee_mint"`, `token_mint`                           |
 | Creator fee right           | Auction            | `"creator_fee_right"`, `fee_mint`                            |
-| Launch metadata             | Token Metadata     | `"metadata"`, `metadata_program_id`, `token_mint`            |
 | Fee-right metadata          | Token Metadata     | `"metadata"`, `metadata_program_id`, `fee_mint`              |
 | Fee-right master edition    | Token Metadata     | `"metadata"`, `metadata_program_id`, `fee_mint`, `"edition"` |
 | Market initializer          | Auction            | `"tamm_initializer"`, `token_mint`                           |
@@ -35,7 +34,9 @@ The second column identifies which program ID to use for each derivation. Text s
 | Market pool                 | Treasury AMM       | `"pool"`, `token_mint`                                       |
 | Market authority            | Treasury AMM       | `"authority"`, `pool`                                        |
 
-Vault addresses are derived with the auction program, while the vault data accounts are owned by the SPL Token program. The two market vaults use the Treasury AMM market-authority PDA as their token authority.
+Launch metadata has no separate account: it lives in the supply mint's Token-2022 metadata extension. Auctions launched before supply mints moved to Token-2022 have a Metaplex metadata account at `"metadata"`, `metadata_program_id`, `token_mint`.
+
+Vault addresses are derived with the auction program, while the vault data accounts are owned by the token programs: Token-2022 for the supply vault and market token vault (SPL Token for auctions launched before supply mints moved to Token-2022), and SPL Token for the quote and market stable vaults. The two market vaults use the Treasury AMM market-authority PDA as their token authority.
 
 The ProgramData PDA belongs to Solana's BPF Upgradeable Loader rather than the auction program. It is read only during `initialize_protocol` to prove that the initializer is the deployment's upgrade authority.
 

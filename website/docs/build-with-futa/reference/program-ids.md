@@ -7,12 +7,13 @@ FUTA deploys the same program IDs on every cluster. A client selects a network b
 | Auction program (`futa`) | `7niSfgKp9rM5PUdkEsZEaHhYsaoXRb33UaHrmbkR3sJu` |
 | Treasury AMM             | `ChhrKC6mGkFtYzh6SftDSn5YdxyXkXCB7Zd88G51b9wZ` |
 
-Two more addresses appear in FUTA derivations and account contracts:
+Three more addresses appear in FUTA derivations and account contracts:
 
-| Program                 | Address                                       | Used for                                                                         |
-| ----------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
-| SPL Token               | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` | Mints, vaults, and every token transfer                                          |
-| Metaplex Token Metadata | `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s` | Metadata and master-edition accounts for launch mints and creator fee-right NFTs |
+| Program                 | Address                                       | Used for                                                            |
+| ----------------------- | --------------------------------------------- | ------------------------------------------------------------------- |
+| Token-2022              | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` | Supply mints, their metadata, and supply-token vaults and transfers |
+| SPL Token               | `TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA` | Quote mints, quote vaults, and quote-token transfers                |
+| Metaplex Token Metadata | `metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s` | Metadata and master-edition accounts for creator fee-right NFTs     |
 
 The permanent reserve authority is derived under Solana's System Program, `11111111111111111111111111111111`. See [Accounts](accounts.md) for the seeds.
 

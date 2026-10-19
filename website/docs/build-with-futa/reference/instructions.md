@@ -122,8 +122,10 @@ Tag 0 is retained only so the later tags keep their numbering. Pools are created
 |     6 | Payer                         | Writable, signer |
 |     7 | Per-mint FUTA initializer PDA | Signer           |
 |     8 | System program                | Read-only        |
-|     9 | SPL Token program             | Read-only        |
+|     9 | Token mint's token program    | Read-only        |
 |    10 | Rent sysvar                   | Read-only        |
+
+Index 9 is Token-2022 for current launches and SPL Token for markets launched before supply mints moved to Token-2022. The token mint and token vault must be owned by it; the stable mint and stable vault must be owned by SPL Token. A Token-2022 token mint may carry only the metadata pointer and token metadata extensions.
 
 `SwapWithHint` verifies buy hints against the invariant boundary. Sell hints are accepted for a symmetric interface; sell execution still derives the result on-chain.
 
@@ -142,8 +144,12 @@ Tag 0 is retained only so the later tags keep their numbering. Pools are created
 |     6 | User                           | Signer    |
 |     7 | SPL Token program              | Read-only |
 |     8 | Clock sysvar                   | Read-only |
+|     9 | Token mint                     | Read-only |
+|    10 | Token mint's token program     | Read-only |
 
-For a buy, the source account's mint is the stable mint and the destination account's mint is the market token. For a sell, those roles reverse. `Buy` and `Sell` use the same nine accounts, but indices 4 and 5 are always user token account then user stable account.
+Index 7 is the stable side's program and is always SPL Token. Index 10 is the program that owns the token mint: Token-2022 for current launches, SPL Token for older markets. Token-side transfers use `TransferChecked`, which is why the token mint is passed.
+
+For a buy, the source account's mint is the stable mint and the destination account's mint is the market token. For a sell, those roles reverse. `Buy` and `Sell` use the same eleven accounts, but indices 4 and 5 are always user token account then user stable account.
 
 ### Slippage and deadlines
 

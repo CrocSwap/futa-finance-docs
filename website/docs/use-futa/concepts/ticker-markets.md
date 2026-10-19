@@ -6,7 +6,7 @@ Every ticker market follows the same lifecycle.
 
 ## 1. Launch
 
-The creator chooses an available ticker and commits the required opening bid in the auction's quote token. FUTA creates a new SPL token mint, mints its fixed supply into protocol-controlled custody, records the ticker-to-mint relationship, and opens the auction atomically.
+The creator chooses an available ticker and commits the required opening bid in the auction's quote token. FUTA creates a new Token-2022 mint carrying the ticker as its permanent on-mint metadata, mints its fixed supply into protocol-controlled custody, records the ticker-to-mint relationship, and opens the auction atomically.
 
 Tickers contain uppercase letters and numbers. A ticker cannot be claimed again after its market has been created.
 
