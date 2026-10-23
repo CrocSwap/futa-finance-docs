@@ -41,7 +41,7 @@ A command that needs arguments you did not supply will prompt for them one at a 
 | `buy [ticker] [amount]`, `sell [ticker] [amount]` | Trade in one explicit direction                                       |
 | `sell all`                                        | Sell every sellable FUTA token in your wallet                         |
 
-In `bid` and `edit`, the amount is in the quote token and `N` is the numbered **MAX MARKET CAP** level. The prompt lists the valid level numbers for that auction; `level N` selects one. See [Place a bid](place-a-bid.md) for what the limit means.
+In `bid` and `edit`, the amount is in the quote token and `N` is the numbered **MAX MARKET CAP** level. The prompt lists the valid level numbers for that auction; `level N` selects one. You can type a market cap in dollars instead, such as `$50k`. A figure shown in the list selects that level; any other amount selects the highest level at or below it. See [Place a bid](place-a-bid.md) for what the limit means.
 
 `watch` and `unwatch` take effect immediately — there is no confirmation, because each is the other's undo and neither builds a transaction. `watch` needs a ticker that names a real auction, open or closed; `unwatch` needs one that is on your watchlist, so an entry whose auction has since disappeared can still be removed. Both print your updated watchlist. The eye button on an auction does the same thing, and the list persists across sessions in this browser.
 
