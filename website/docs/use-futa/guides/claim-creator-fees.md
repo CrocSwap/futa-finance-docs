@@ -16,15 +16,15 @@ Connect the wallet that holds the fee right and keep enough SOL available for th
 
 ## Initialize a fee right
 
-A launch's fee right does not exist until someone creates it. This is a one-time transaction per launch, separate from finalization.
+A launch's fee-right NFT does not exist until someone mints it. This is a one-time transaction per launch, separate from finalization.
 
 1. Open **ACCOUNT**, then **FEES**.
-2. Look for the **READY TO INITIALIZE** section. It appears only when a launch is eligible and its fee right has not been created yet.
-3. Find the ticker and select **INITIALIZE**.
+2. Find the ticker under **OWNED FEE RIGHTS**. A fee right whose NFT has not been minted yet shows **INITIALIZE** in its **FEE RIGHT** column instead of an address. On a phone, where that column is hidden, **INITIALIZE** takes the place of **CLAIM**.
+3. Select **INITIALIZE**.
 4. Review and approve the transaction when prompted.
-5. Wait for confirmation. The ticker then moves into **OWNED FEE RIGHTS**.
+5. Wait for confirmation. The **FEE RIGHT** column then shows the NFT's address.
 
-The NFT is always minted to the wallet recorded as the launch creator, whoever pays for the transaction. Until a fee right is initialized, that launch's creator fees cannot be claimed by anyone.
+The NFT is always minted to the wallet recorded as the launch creator, whoever pays for the transaction. Until it is minted, the launch creator holds the fee right directly: that wallet can claim the fees, but the right cannot be transferred.
 
 Launches finalized before creator fee rights were introduced are not eligible and will not appear in this section.
 
@@ -44,7 +44,7 @@ Select **CLAIM ALL** to collect the available fees across every fee right you ho
 
 Confirmed claims remain complete if a later transaction fails. Reopen **FEES** and retry any amount that still appears.
 
-**CLAIM ALL** only claims. It does not initialize fee rights, so initialize anything under **READY TO INITIALIZE** first if you want its fees included.
+**CLAIM ALL** only claims. It does not mint fee-right NFTs; fee rights that still show **INITIALIZE** are claimed as they are.
 
 When nothing is available, the panel says so instead of offering a claim.
 
